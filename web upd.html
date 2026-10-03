@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Personalized HEARTIFACT memories. Choose your design and order with reference photos. Free delivery across Lebanon."
+    >
+
+    <title>HEARTIFACT | Your Story Made Visible</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://tally.so/widgets/embed.js" async></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+<header>
+    <button class="brand" data-page="home" type="button">
+        HEARTIFACT
+    </button>
+
+    <nav aria-label="Main navigation">
+        <button data-page="home" type="button">Home</button>
+        <button data-page="products" type="button">Products</button>
+        <button data-page="about" type="button">About</button>
+        <button data-page="contact" type="button">Contact</button>
+    </nav>
+</header>
+
+<main>
+
+    <!-- HOME -->
+
+    <section id="home" class="screen" aria-labelledby="home-title">
+        <div class="screen-body hero">
+            <p class="eyebrow">
+                PERSONALIZED · MEANINGFUL · YOURS
+            </p>
+
+            <div class="heart" aria-hidden="true">♡</div>
+
+            <h1 id="home-title" tabindex="-1">
+                Your story,<br>
+                <span>made visible.</span>
+            </h1>
+
+            <p>
+                Turn your favorite people, places and memories
+                into a personalized HEARTIFACT.
+            </p>
+
+            <button type="button" class="primary" data-page="products">
+                Create your HEARTIFACT →
+            </button>
+
+            <div class="perks">
+                <span>100% customized</span>
+                <span>Free Lebanon delivery</span>
+                <span>4–5 business days</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ORDER STEPS -->
+
+    <section
+        id="products"
+        class="screen"
+        hidden
+        aria-labelledby="step-title"
+    >
+        <div class="flow-header">
+            <p id="step-count" class="eyebrow">STEP 1 OF 7</p>
+
+            <h2 id="step-title" tabindex="-1">
+                Choose your size
+            </h2>
+
+            <p id="step-description"></p>
+
+            <progress
+                id="step-progress"
+                max="7"
+                value="1"
+                aria-label="Order progress"
+            ></progress>
+        </div>
+
+        <div id="step-body" class="screen-body">
+
+            <!-- SIZE -->
+
+            <div class="step" data-step="0">
+                <div class="sizes">
+
+                    <button
+                        type="button"
+                        class="size-card"
+                        data-size="Small"
+                        aria-pressed="false"
+                    >
+                        <img
+                            src="product1.png"
+                            alt="Personalized memory house"
+                        >
+
+                        <span class="product-info">
+                            <strong>
+                                Small la casa de la memoria
+                            </strong>
+
+                            <span lang="ar" dir="rtl">
+                                بيت الذكريات
+                            </span>
+
+                            <span>20 × 20 cm</span>
+                            <b>$30</b>
+                        </span>
+
+                        <span class="selection-mark" aria-hidden="true">
+                            ✓
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="size-card"
+                        data-size="Large"
+                        aria-pressed="false"
+                    >
+                        <img
+                            src="product1.png"
+                            alt="Personalized memory house"
+                        >
+
+                        <span class="product-info">
+                            <strong>
+                                Large la casa de la memoria
+                            </strong>
+
+                            <span lang="ar" dir="rtl">
+                                بيت الذكريات
+                            </span>
+
+                            <span>30 × 30 cm · Most popular</span>
+                            <b>$40</b>
+                        </span>
+
+                        <span class="selection-mark" aria-hidden="true">
+                            ✓
+                        </span>
+                    </button>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="text-button"
+                    data-custom="size"
+                >
+                    Need a custom size? Ask us on WhatsApp ↗
+                </button>
+            </div>
+
+            <!-- THEME -->
+
+            <div class="step" data-step="1" hidden>
+                <div class="theme-grid">
+
+                    <button
+                        type="button"
+                        class="choice"
+                        data-theme="Special Moments"
+                        aria-pressed="false"
+                    >
+                        <span aria-hidden="true">♡</span>
+                        <strong>Special Moments</strong>
+                        <small>Weddings, birthdays and milestones</small>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice"
+                        data-theme="Friends & Family"
+                        aria-pressed="false"
+                    >
+                        <span aria-hidden="true">♡</span>
+                        <strong>Friends &amp; Family</strong>
+                        <small>Your favorite people and memories</small>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice"
+                        data-theme="Locations"
+                        aria-pressed="false"
+                    >
+                        <span aria-hidden="true">◇</span>
+                        <strong>Locations</strong>
+                        <small>A place close to your heart</small>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice"
+                        data-theme="Jobs"
+                        aria-pressed="false"
+                    >
+                        <span aria-hidden="true">✦</span>
+                        <strong>Jobs</strong>
+                        <small>Careers, professions and passions</small>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- DESIGN CARDS -->
+
+            <div class="step" data-step="2" hidden>
+                <input id="design" type="hidden">
+
+                <div
+                    id="design-grid"
+                    class="design-grid"
+                    role="group"
+                    aria-label="Choose your design"
+                ></div>
+
+                <div class="design-pagination">
+                    <button
+                        id="previous-designs"
+                        type="button"
+                        class="secondary"
+                    >
+                        ← Previous designs
+                    </button>
+
+                    <span id="design-page" aria-live="polite"></span>
+
+                    <button
+                        id="more-designs"
+                        type="button"
+                        class="secondary"
+                    >
+                        More designs →
+                    </button>
+                </div>
+
+                <p class="hint">
+                    Choose an “Any…” option for your own idea,
+                    then describe it in the next step.
+                </p>
+
+                <div class="quantity-card">
+                    <label for="quantity">Quantity</label>
+
+                    <div class="quantity-controls">
+                        <button
+                            id="quantity-minus"
+                            type="button"
+                            class="secondary"
+                            aria-label="Decrease quantity"
+                        >
+                            −
+                        </button>
+
+                        <input
+                            id="quantity"
+                            type="number"
+                            min="1"
+                            max="10"
+                            step="1"
+                            value="1"
+                            inputmode="numeric"
+                        >
+
+                        <button
+                            id="quantity-plus"
+                            type="button"
+                            class="secondary"
+                            aria-label="Increase quantity"
+                        >
+                            +
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PERSONALIZATION -->
+
+            <div class="step" data-step="3" hidden>
+                <label for="instructions">
+                    Tell us about your design
+
+                    <span class="optional">
+                        optional, except custom designs
+                    </span>
+                </label>
+
+                <textarea
+                    id="instructions"
+                    maxlength="1000"
+                    rows="5"
+                    placeholder="Clothing, colors, poses, background details, names or the memory you want to capture..."
+                ></textarea>
+
+                <div class="notice">
+                    <strong>Your reference photos</strong>
+
+                    <p>
+                        You’ll choose and upload photos securely
+                        in the final Tally form. No need to send
+                        them separately through WhatsApp.
+                    </p>
+                </div>
+            </div>
+
+            <!-- DELIVERY -->
+
+            <div class="step" data-step="4" hidden>
+                <div class="form-grid">
+                    <div>
+                        <label for="customer-name">Full name</label>
+
+                        <input
+                            id="customer-name"
+                            autocomplete="name"
+                            maxlength="100"
+                            placeholder="Your full name"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="customer-phone">Phone number</label>
+
+                        <input
+                            id="customer-phone"
+                            type="tel"
+                            autocomplete="tel"
+                            inputmode="tel"
+                            maxlength="30"
+                            placeholder="+961 71 123 456"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="customer-area">Area / city</label>
+
+                        <input
+                            id="customer-area"
+                            autocomplete="address-level2"
+                            maxlength="100"
+                            placeholder="Beirut, Baabda, Jounieh..."
+                        >
+                    </div>
+
+                    <div>
+                        <label for="customer-address">Full address</label>
+
+                        <input
+                            id="customer-address"
+                            autocomplete="street-address"
+                            maxlength="250"
+                            placeholder="Street, building, floor..."
+                        >
+                    </div>
+                </div>
+
+                <p class="hint">Free delivery across Lebanon.</p>
+            </div>
+
+            <!-- PAYMENT -->
+
+            <div class="step" data-step="5" hidden>
+                <div class="payment-grid">
+
+                    <button
+                        type="button"
+                        class="choice"
+                        data-payment="Cash"
+                        aria-pressed="false"
+                    >
+                        <span aria-hidden="true">$</span>
+                        <strong>Cash</strong>
+                        <small>Pay on delivery</small>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice"
+                        data-payment="Whish Money"
+                        aria-pressed="false"
+                    >
+                        <span aria-hidden="true">W</span>
+                        <strong>Whish Money</strong>
+                        <small>+961 71 963 311</small>
+                    </button>
+
+                </div>
+
+                <p class="hint">
+                    Selecting Whish Money does not make a payment.
+                    We’ll confirm payment details with you.
+                </p>
+            </div>
+
+            <!-- REVIEW -->
+
+            <div class="step" data-step="6" hidden>
+                <div id="order-summary" class="summary"></div>
+
+                <div class="notice">
+                    <strong>
+                        Upload photos, then send a WhatsApp copy
+                    </strong>
+
+                    <p>
+                        Choose your photos and press Submit
+                        in the photo form to save your order
+                        and send our email notification.
+                        Then send a copy of the order in WhatsApp.
+                    </p>
+                </div>
+
+                <div id="upload-fallback" class="notice" hidden>
+                    <strong>Open the photo form separately</strong>
+
+                    <p>
+                        The photo window could not load.
+                        Open the form below, upload your photos
+                        and press Submit. Then return here
+                        to send your WhatsApp copy.
+                    </p>
+
+                    <a
+                        id="fallback-form-link"
+                        class="primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Open photo form ↗
+                    </a>
+
+                    <button
+                        id="fallback-whatsapp"
+                        type="button"
+                        class="secondary"
+                    >
+                        Send WhatsApp copy
+                    </button>
+
+                    <p>
+                        This website cannot check a submission
+                        made in a separate tab. Submit the photo
+                        form before sending the WhatsApp copy.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="text-button"
+                    id="whatsapp-summary"
+                >
+                    Have a question? Message us on WhatsApp ↗
+                </button>
+            </div>
+
+        </div>
+
+        <p id="step-error" class="error" role="alert"></p>
+
+        <div class="flow-footer">
+            <button type="button" id="back-button" class="secondary">
+                ← Back
+            </button>
+
+            <span id="running-total">$0.00</span>
+
+            <button type="button" id="next-button" class="primary">
+                Next →
+            </button>
+        </div>
+    </section>
+
+    <!-- AFTER PHOTO SUBMISSION -->
+
+    <section
+        id="confirmation"
+        class="screen"
+        hidden
+        aria-labelledby="confirmation-title"
+    >
+        <div class="screen-body content-page">
+            <p class="eyebrow">PHOTO FORM SUBMITTED</p>
+
+            <div class="heart" aria-hidden="true">✓</div>
+
+            <h2 id="confirmation-title" tabindex="-1">
+                Now send your<br>
+                <span>WhatsApp copy.</span>
+            </h2>
+
+            <p id="confirmed-order"></p>
+
+            <p>
+                Your order and photos were submitted to Tally.
+                The email notification will be sent according
+                to our form settings.
+            </p>
+
+            <button id="send-whatsapp" type="button" class="primary">
+                Send order on WhatsApp ↗
+            </button>
+
+            <p id="whatsapp-status" role="status" aria-live="polite">
+                Tap the button, then press Send in WhatsApp.
+                Photos are saved in Tally; this message
+                includes the matching order number.
+            </p>
+
+            <button id="new-order" type="button" class="secondary">
+                Start a new order
+            </button>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+
+    <section
+        id="about"
+        class="screen"
+        hidden
+        aria-labelledby="about-title"
+    >
+        <div class="screen-body content-page">
+            <p class="eyebrow">THE HEART BEHIND THE ART</p>
+
+            <h2 id="about-title" tabindex="-1">
+                More than decoration.<br>
+                <span>It’s your story.</span>
+            </h2>
+
+            <p>
+                HEARTIFACT turns memories, relationships,
+                professions, destinations and meaningful
+                moments into personalized pieces designed
+                around you.
+            </p>
+
+            <p>
+                From the characters and clothing to the
+                setting and smallest details, we customize
+                everything to make your piece yours.
+            </p>
+
+            <button type="button" class="primary" data-page="products">
+                Create your HEARTIFACT →
+            </button>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+
+    <section
+        id="contact"
+        class="screen"
+        hidden
+        aria-labelledby="contact-title"
+    >
+        <div class="screen-body content-page">
+            <p class="eyebrow">TALK TO US</p>
+
+            <h2 id="contact-title" tabindex="-1">
+                Have something<br>
+                <span>different in mind?</span>
+            </h2>
+
+            <p>
+                A custom size, special idea or different theme?
+                We’re only a message away.
+            </p>
+
+            <button type="button" class="primary" data-custom="idea">
+                WhatsApp us ↗
+            </button>
+
+            <a
+                class="contact-link"
+                href="mailto:heartifact.lb@gmail.com"
+            >
+                heartifact.lb@gmail.com
+            </a>
+
+            <a class="contact-link" href="tel:+96171963311">
+                +961 71 963 311
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<footer>HEARTIFACT · Made for your memories</footer>
+
+<noscript>
+    <p class="no-script">
+        Please enable JavaScript to use the order steps.
+        Contact heartifact.lb@gmail.com for help.
+    </p>
+</noscript>
+
+</body>
+</html>
