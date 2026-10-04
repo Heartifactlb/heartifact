@@ -1,1262 +1,645 @@
-/* =====================================
-   HEARTIFACT
-===================================== */
+"use strict";
 
+const $ = id => document.getElementById(id);
 
-/* BUSINESS */
-
-const WHATSAPP_NUMBER =
-    "96171963311";
-
-const WHISH_NUMBER =
-    "+961 71 963 311";
-
-const BUSINESS_EMAIL =
-    "heloukevin961@gmail.com";
-
-const WEBSITE =
-    "heartifactlb.com";
-
-const MAX_PHOTOS =
-    5;
-
-
-/* CURRENT SELECTION */
-
-let selectedSize =
-    null;
-
-let selectedDimensions =
-    null;
-
-let selectedPrice =
-    null;
-
-let selectedTheme =
-    null;
-
-let selectedPayment =
-    null;
-
-let uploadedPhotos =
-    [];
-
-
-/* CART */
-
-let cart =
-    JSON.parse(
-        localStorage.getItem(
-            "heartifactCart"
-        )
-    ) || [];
-
-
-/* THEME OPTIONS */
-
-const themeOptions = {
-
-
-    "Special Moments": [
-
-        "Christmas",
-
-        "Valentine's Day",
-
-        "Wedding Day",
-
-        "Engagement Day",
-
-        "Anniversary",
-
-        "Honeymoon",
-
-        "Proposal",
-
-        "Our First Date",
-
-        "Lovely Home",
-
-        "Birthday",
-
-        "Graduation",
-
-        "Any Moment You Want"
-
-    ],
-
-
-    "Friends & Family": [
-
-        "Vacation",
-
-        "Family",
-
-        "Any Memory You Want"
-
-    ],
-
-
-    "Locations": [
-
-        "Paris",
-
-        "Dubai",
-
-        "Rome",
-
-        "New York City",
-
-        "Santorini",
-
-        "London",
-
-        "Tokyo",
-
-        "Bali",
-
-        "Hawaii",
-
-        "Any Location You Choose"
-
-    ],
-
-
-    "Jobs": [
-
-        "Doctor",
-
-        "Lawyer",
-
-        "Teacher",
-
-        "Artist",
-
-        "Business Owner",
-
-        "Architect",
-
-        "Engineer",
-
-        "Any Job You Want"
-
-    ]
-
+const PRODUCTS = {
+  Mini: { name: "Mini · The Memory House", price: 30 },
+  Grand: { name: "Grand · The Memory House", price: 40 }
 };
 
+const THEMES = {
+  "Special Moments": [
+    "Christmas", "Valentine’s Day", "Wedding Day",
+    "Engagement Day", "Anniversary", "Honeymoon",
+    "Proposal", "Our First Date", "Lovely Home",
+    "Birthday", "Graduation", "Anything customized"
+  ],
+  "Friends & Family": [
+    "Vacation", "Family", "Anything customized"
+  ],
+  Locations: [
+    "Paris", "Dubai", "Rome", "New York City",
+    "Santorini", "London", "Tokyo", "Bali",
+    "Hawaii", "Anything customized"
+  ],
+  Jobs: [
+    "Doctor", "Lawyer", "Teacher", "Artist",
+    "Business Owner", "Architect", "Engineer",
+    "Anything customized"
+  ],
+  Custom: ["Anything customized"]
+};
 
-/* CUSTOM OPTION */
+const freshOrder = () => ({
+  size: "",
+  theme: "",
+  design: "",
+  quantity: 1,
+  instructions: "",
+  name: "",
+  phone: "",
+  area: "",
+  address: "",
+  payment: "Cash",
+  orderId: ""
+});
 
-function isCustomOption(
-    option
-) {
+let state = freshOrder();
+let step = 0;
+let activePage = "shop";
+let advanceTimer;
+let submittedOrder = null;
+let fallbackOrder = null;
+let whatsappOpened = false;
+let photosVerified = false;
 
-    return (
+const isCustom = () => state.design === "Anything customized";
+const total = () => (PRODUCTS[state.size]?.price || 0) * state.quantity;
 
-        option.includes(
-            "Any Moment"
-        )
-
-        ||
-
-        option.includes(
-            "Any Memory"
-        )
-
-        ||
-
-        option.includes(
-            "Any Location"
-        )
-
-        ||
-
-        option.includes(
-            "Any Job"
-        )
-
-    );
-
+function edited() {
+  state.orderId = "";
+  fallbackOrder = null;
+  $("upload-fallback").hidden = true;
+  $("error").textContent = "";
+  updateSummary();
 }
 
+function updateSummary() {
+  $("quantity").textContent = state.quantity;
+  $("running-total").textContent = state.size ? `$${total()}` : "";
+  $("summary-name").textContent = PRODUCTS[state.size]?.name || "The Memory House";
+  $("summary-quantity").textContent = state.quantity;
+  $("summary-total").textContent = `$${total()}`;
+}
 
-/* CHOOSE SIZE */
+function selected(selector, key, value) {
+  document.querySelectorAll(selector).forEach(button => {
+    const active = button.dataset[key] === value;
+    button.classList.toggle("selected", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
 
-function chooseSize(
-    size,
-    dimensions,
-    price,
-    button
-) {
+function validate(index) {
+  if (index === 0 && !PRODUCTS[state.size]) {
+    return "Choose Mini or Grand to start.";
+  }
 
-    selectedSize =
-        size;
+  if (index === 1 && !THEMES[state.theme]) {
+    return "Choose your theme first.";
+  }
 
+  if (index === 2) {
+    if (!THEMES[state.theme]?.includes(state.design)) {
+      return "Choose a design first.";
+    }
 
-    selectedDimensions =
-        dimensions;
+    if (isCustom() && !state.instructions.trim()) {
+      return "Tell us about your customized idea first.";
+    }
+  }
 
+  return "";
+}
 
-    selectedPrice =
-        price;
+function showStep(index) {
+  clearTimeout(advanceTimer);
 
+  for (let n = 0; n < index; n++) {
+    const message = validate(n);
 
-    selectedTheme =
-        null;
+    if (message) {
+      showStep(n);
+      $("error").textContent = message;
+      return;
+    }
+  }
 
+  const backwards = index < step;
+  step = index;
+  showPage("shop");
 
-    document
-        .querySelectorAll(
-            ".product-card"
-        )
-        .forEach(
-            card => {
+  document.querySelectorAll("[data-step]").forEach(panel => {
+    const active = Number(panel.dataset.step) === step;
+    panel.hidden = !active;
+    panel.classList.remove("enter-forward", "enter-back");
 
-                card.classList.remove(
-                    "selected"
-                );
+    if (active) {
+      void panel.offsetWidth;
+      panel.classList.add(backwards ? "enter-back" : "enter-forward");
+      panel.scrollTop = 0;
+      panel.querySelector("h1,h2")?.focus({ preventScroll: true });
+    }
+  });
 
-            }
-        );
+  document.querySelectorAll("[data-go]").forEach(button => {
+    const n = Number(button.dataset.go);
+    button.classList.toggle("complete", n < step);
 
+    if (n === step) {
+      button.setAttribute("aria-current", "step");
+    } else {
+      button.removeAttribute("aria-current");
+    }
+  });
 
-    button
-        .closest(
-            ".product-card"
-        )
-        .classList.add(
-            "selected"
-        );
+  $("flow-hint").textContent = step === 0
+    ? "Made for your memories ♡"
+    : "Tap a step above to edit your choices";
 
+  $("error").textContent = "";
+  updateSummary();
 
-    document.getElementById(
-        "size-message"
-    ).textContent =
+  history.replaceState(null, "", step === 0 ? "#home" : "#create");
+}
 
-        `You selected ${size} — ${dimensions}. Now choose your story.`;
+function showPage(page) {
+  if (page === "thank-you" && !whatsappOpened) return;
 
+  clearTimeout(advanceTimer);
+  activePage = page;
 
-    document
-        .querySelectorAll(
-            ".theme-card"
-        )
-        .forEach(
-            card => {
+  document.querySelectorAll(".page").forEach(panel => {
+    panel.hidden = panel.id !== page;
+  });
 
-                card.classList.remove(
-                    "selected"
-                );
+  document.querySelectorAll("nav [data-page]").forEach(button => {
+    const active = page === "shop"
+      ? button.dataset.page === (step === 0 ? "home" : "products")
+      : button.dataset.page === page;
 
-            }
-        );
+    button.classList.toggle("active", active);
 
+    if (active) {
+      button.setAttribute("aria-current", "page");
+    } else {
+      button.removeAttribute("aria-current");
+    }
+  });
 
-    document.getElementById(
-        "options-container"
-    ).innerHTML =
-        "";
+  if (page !== "shop") {
+    history.replaceState(null, "", `#${page}`);
+    $(page).querySelector("h2")?.focus({ preventScroll: true });
+  }
+}
 
+function slideAfterChoice(index) {
+  clearTimeout(advanceTimer);
+  advanceTimer = setTimeout(() => showStep(index), 450);
+}
 
-    document.getElementById(
-        "themes"
-    ).scrollIntoView({
+function drawDesigns() {
+  $("design-grid").replaceChildren();
 
-        behavior:
-            "smooth"
+  (THEMES[state.theme] || []).forEach(design => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "design-card";
+    button.dataset.design = design;
 
+    if (design === "Anything customized") {
+      button.classList.add("custom-design");
+    }
+
+    const icon = document.createElement("span");
+    icon.textContent = design === "Anything customized" ? "✧" : "♡";
+    icon.setAttribute("aria-hidden", "true");
+
+    const title = document.createElement("strong");
+    title.textContent = design;
+
+    button.append(icon, title);
+
+    button.addEventListener("click", () => {
+      clearTimeout(advanceTimer);
+      state.design = design;
+
+      edited();
+      selected("[data-design]", "design", design);
+      updateNote();
+
+      if (isCustom() && !state.instructions.trim()) {
+        $("error").textContent = "Tell us about your customized idea first.";
+        $("instructions").focus();
+        return;
+      }
+
+      slideAfterChoice(3);
     });
 
+    $("design-grid").append(button);
+  });
+
+  selected("[data-design]", "design", state.design);
+  updateNote();
 }
 
+function updateNote() {
+  const required = isCustom() || state.theme === "Custom";
 
-/* CHOOSE THEME */
+  $("note-optional").textContent = required
+    ? "(required for your custom idea)"
+    : "(optional)";
 
-function chooseTheme(
-    theme,
-    button
-) {
-
-    if (
-        !selectedSize
-    ) {
-
-        alert(
-            "Please choose your HEARTIFACT size first."
-        );
-
-
-        document.getElementById(
-            "products"
-        ).scrollIntoView({
-
-            behavior:
-                "smooth"
-
-        });
-
-
-        return;
-
-    }
-
-
-    selectedTheme =
-        theme;
-
-
-    document
-        .querySelectorAll(
-            ".theme-card"
-        )
-        .forEach(
-            card => {
-
-                card.classList.remove(
-                    "selected"
-                );
-
-            }
-        );
-
-
-    button.classList.add(
-        "selected"
-    );
-
-
-    showOptions(
-        theme
-    );
-
-
-    document.getElementById(
-        "options"
-    ).scrollIntoView({
-
-        behavior:
-            "smooth"
-
-    });
-
+  $("design-hint").textContent = required
+    ? "Describe your idea, then tap Anything customized to continue."
+    : "Add a note if you like, then tap a design to continue.";
 }
 
+function phoneNumber(raw) {
+  let digits = raw.replace(/\D/g, "");
 
-/* SHOW OPTIONS */
+  if (raw.trim().startsWith("00")) {
+    digits = digits.slice(2);
+  }
 
-function showOptions(
-    theme
-) {
+  if (raw.trim().startsWith("+") || raw.trim().startsWith("00")) {
+    return `+${digits}`;
+  }
 
-    const container =
-        document.getElementById(
-            "options-container"
-        );
+  if (digits.startsWith("961") && digits.length >= 10) {
+    return `+${digits}`;
+  }
 
+  if (digits.length === 8 && digits.startsWith("0")) {
+    digits = digits.slice(1);
+  }
 
-    container.innerHTML =
-        "";
+  if (digits.length === 7 || digits.length === 8) {
+    return `+961${digits}`;
+  }
 
-
-    document.getElementById(
-        "options-title"
-    ).textContent =
-        theme;
-
-
-    document.getElementById(
-        "options-text"
-    ).textContent =
-
-        "Choose a design and we'll add it directly to your cart.";
-
-
-    themeOptions[
-        theme
-    ].forEach(
-
-        (
-            option,
-            index
-        ) => {
-
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "option-card";
-
-
-            card.textContent =
-                option;
-
-
-            card.style.animationDelay =
-                `${index * 0.05}s`;
-
-
-            if (
-                isCustomOption(
-                    option
-                )
-            ) {
-
-                card.classList.add(
-                    "custom-option"
-                );
-
-
-                card.onclick =
-                    () => {
-
-                        openWhatsApp(
-
-                            `Hello HEARTIFACT! I would like a custom ${theme} design.`
-
-                        );
-
-                    };
-
-            }
-
-            else {
-
-                card.onclick =
-                    () => {
-
-                        addToCart(
-                            option
-                        );
-
-                    };
-
-            }
-
-
-            container.appendChild(
-                card
-            );
-
-        }
-
-    );
-
+  return "";
 }
 
-
-/* ADD TO CART */
-
-function addToCart(
-    option
-) {
-
-    if (
-        !selectedSize
-        ||
-        !selectedTheme
-    ) {
-
-        return;
-
-    }
-
-
-    const item = {
-
-        id:
-            Date.now(),
-
-        size:
-            selectedSize,
-
-        dimensions:
-            selectedDimensions,
-
-        theme:
-            selectedTheme,
-
-        option:
-            option,
-
-        price:
-            selectedPrice
-
-    };
-
-
-    cart.push(
-        item
-    );
-
-
-    saveCart();
-
-
-    updateCart();
-
-
-    animateCart();
-
-
-    showToast();
-
-
-    setTimeout(
-        () => {
-
-            document.getElementById(
-                "cart"
-            ).scrollIntoView({
-
-                behavior:
-                    "smooth"
-
-            });
-
-        },
-        350
-    );
-
+function readDetails() {
+  for (const key of ["name", "phone", "area", "address", "payment"]) {
+    state[key] = $(key).value.trim();
+  }
 }
 
+function orderDetails() {
+  const product = PRODUCTS[state.size];
 
-/* SAVE CART */
-
-function saveCart() {
-
-    localStorage.setItem(
-
-        "heartifactCart",
-
-        JSON.stringify(
-            cart
-        )
-
-    );
-
+  return [
+    `Product: ${product.name} — بيت الذكريات`,
+    `Theme: ${state.theme}`,
+    `Design: ${state.design}`,
+    `Quantity: ${state.quantity}`,
+    `Unit price: $${product.price.toFixed(2)}`,
+    `Total: $${total().toFixed(2)}`,
+    `Customer: ${state.name}`,
+    `Phone: ${phoneNumber(state.phone)}`,
+    `Area: ${state.area}`,
+    `Address: ${state.address}`,
+    `Payment: ${state.payment}`,
+    ...(state.payment === "Whish Money"
+      ? ["Whish number: +961 71 963 311"]
+      : []),
+    `Instructions: ${state.instructions.trim() || "None"}`
+  ].join("\n");
 }
 
-
-/* UPDATE CART */
-
-function updateCart() {
-
-    const container =
-        document.getElementById(
-            "cart-items"
-        );
-
-
-    container.innerHTML =
-        "";
-
-
-    let total =
-        0;
-
-
-    if (
-        cart.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="empty-cart">
-
-                <span>
-                    ♡
-                </span>
-
-                <h3>
-                    Your cart is waiting for your story.
-                </h3>
-
-                <p>
-                    Choose a size, theme and design above.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-
-    cart.forEach(
-
-        (
-            item,
-            index
-        ) => {
-
-
-            const element =
-                document.createElement(
-                    "div"
-                );
-
-
-            element.className =
-                "cart-item";
-
-
-            element.innerHTML = `
-
-                <div>
-
-                    <h3>
-
-                        ${item.option}
-
-                    </h3>
-
-                    <p>
-
-                        ${item.theme}
-
-                        <br>
-
-                        ${item.size}
-                        — ${item.dimensions}
-
-                    </p>
-
-                </div>
-
-
-                <div class="cart-price">
-
-                    <strong>
-
-                        $${item.price.toFixed(2)}
-
-                    </strong>
-
-                    <button
-                        class="remove-btn"
-                        onclick="removeItem(${index})"
-                    >
-
-                        Remove
-
-                    </button>
-
-                </div>
-
-            `;
-
-
-            container.appendChild(
-                element
-            );
-
-
-            total +=
-                item.price;
-
-        }
-
-    );
-
-
-    document.getElementById(
-        "cart-count"
-    ).textContent =
-        cart.length;
-
-
-    document.getElementById(
-        "cart-total"
-    ).textContent =
-        total.toFixed(2);
-
-
-    document.getElementById(
-        "grand-total"
-    ).textContent =
-        total.toFixed(2);
-
+function openWhatsApp(message) {
+  window.open(
+    `https://wa.me/96171963311?text=${encodeURIComponent(message)}`,
+    "_blank",
+    "noopener,noreferrer"
+  );
 }
 
+function uploadedPhotoCount(payload) {
+  if (!Array.isArray(payload?.fields)) return null;
 
-/* REMOVE ITEM */
+  const uploads = payload.fields.filter(field => {
+    return field.type === "FILE_UPLOAD";
+  });
 
-function removeItem(
-    index
-) {
+  if (!uploads.length) return null;
 
-    cart.splice(
-        index,
-        1
-    );
+  let count = 0;
 
-
-    saveCart();
-
-
-    updateCart();
-
-}
-
-
-/* CLEAR CART */
-
-function clearCart() {
-
-    if (
-        cart.length === 0
-    ) {
-
-        alert(
-            "Your cart is already empty."
-        );
-
-
-        return;
-
-    }
-
-
-    if (
-        confirm(
-            "Clear your HEARTIFACT cart?"
-        )
-    ) {
-
-        cart =
-            [];
-
-
-        saveCart();
-
-
-        updateCart();
-
-    }
-
-}
-
-
-/* PHOTOS */
-
-function previewPhotos(
-    event
-) {
-
+  for (const field of uploads) {
     const files =
-        Array.from(
-            event.target.files
-        );
+      field.answer?.value ??
+      field.value ??
+      field.answer?.raw;
 
-
-    if (
-        files.length >
-        MAX_PHOTOS
-    ) {
-
-        alert(
-            "You can upload a maximum of 5 photos."
-        );
-
-
-        event.target.value =
-            "";
-
-
-        uploadedPhotos =
-            [];
-
-
-        document.getElementById(
-            "photo-preview"
-        ).innerHTML =
-            "";
-
-
-        updatePhotoCount();
-
-
-        return;
-
+    if (files === null || files === undefined) {
+      return null;
     }
 
+    if (Array.isArray(files)) {
+      count += files.length;
+    } else if (Array.isArray(files.files)) {
+      count += files.files.length;
+    } else if (
+      typeof files === "object" &&
+      (files.url || files.name || files.id)
+    ) {
+      count++;
+    } else {
+      return null;
+    }
+  }
 
-    uploadedPhotos =
-        files;
+  return count;
+}
 
+function sendCopy(order, verified) {
+  if (!order) return;
 
-    const container =
-        document.getElementById(
-            "photo-preview"
-        );
+  let photoLine;
 
+  if (verified) {
+    photoLine = Number.isInteger(order.photoCount)
+      ? `Photos submitted: ${order.photoCount}`
+      : "Photos submitted in Tally.";
+  } else {
+    photoLine = "Please match this order with my Tally photo submission.";
+  }
 
-    container.innerHTML =
-        "";
+  openWhatsApp(
+    `Hello HEARTIFACT! ♡\n\n${order.details}\n\n${photoLine}`
+  );
+}
 
+function showWhatsAppStep(order, verified) {
+  submittedOrder = order;
+  photosVerified = verified;
+  whatsappOpened = false;
+  showPage("confirmation");
+}
 
-    files.forEach(
-        file => {
+function openPhotoForm() {
+  readDetails();
 
+  for (let n = 0; n < 3; n++) {
+    const message = validate(n);
 
-            const reader =
-                new FileReader();
+    if (message) {
+      showStep(n);
+      $("error").textContent = message;
+      return;
+    }
+  }
 
+  if (!/^\+[1-9]\d{7,14}$/.test(phoneNumber(state.phone))) {
+    $("error").textContent =
+      "Please enter a valid phone number. Use your country code if outside Lebanon.";
 
-            reader.onload =
-                event => {
+    $("phone").focus();
+    return;
+  }
 
+  if (!state.orderId) {
+    state.orderId =
+      `HF-${Date.now().toString(36).toUpperCase()}-` +
+      Math.random().toString(36).slice(2, 6).toUpperCase();
+  }
 
-                    const box =
-                        document.createElement(
-                            "div"
-                        );
+  const order = {
+    id: state.orderId,
+    details: orderDetails()
+  };
 
+  fallbackOrder = order;
 
-                    box.className =
-                        "preview-image";
+  const fields = {
+    customer_name: state.name,
+    customer_phone: phoneNumber(state.phone),
+    order_id: order.id,
+    order_details: order.details
+  };
 
+  const url = new URL("https://tally.so/r/KYdbyD");
 
-                    box.innerHTML = `
+  Object.entries(fields).forEach(([key, value]) => {
+    url.searchParams.set(key, value);
+  });
 
-                        <img
-                            src="${event.target.result}"
-                            alt="Customer reference"
-                        >
+  $("fallback-link").href = url.toString();
 
-                    `;
+  const fallback = () => {
+    $("upload-fallback").hidden = false;
+    $("upload-fallback").scrollIntoView({ block: "nearest" });
+  };
 
+  if (!window.Tally?.openPopup) {
+    fallback();
+    return;
+  }
 
-                    container.appendChild(
-                        box
-                    );
+  $("upload-fallback").hidden = true;
+  $("error").textContent = "";
 
-                };
+  let sent = false;
 
+  try {
+    window.Tally.openPopup("KYdbyD", {
+      layout: "modal",
+      width: 640,
+      overlay: true,
+      hiddenFields: fields,
 
-            reader.readAsDataURL(
-                file
-            );
+      onSubmit: payload => {
+        if (sent) return;
 
+        sent = true;
+        order.photoCount = uploadedPhotoCount(payload);
+
+        window.Tally.closePopup?.("KYdbyD");
+        showWhatsAppStep(order, true);
+      },
+
+      onClose: () => {
+        if (!sent) {
+          $("error").textContent =
+            "Upload your photos and press Submit to finish your order.";
         }
-
-    );
-
-
-    updatePhotoCount();
-
+      }
+    });
+  } catch {
+    fallback();
+  }
 }
 
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => {
+    const page = button.dataset.page;
 
-/* PHOTO COUNT */
+    if (page === "home" || page === "products") {
+      showStep(0);
+    } else {
+      showPage(page);
+    }
+  });
+});
 
-function updatePhotoCount() {
+document.querySelectorAll("[data-go]").forEach(button => {
+  button.addEventListener("click", () => {
+    showStep(Number(button.dataset.go));
+  });
+});
 
-    document.getElementById(
-        "photo-count"
-    ).textContent =
+document.querySelectorAll("[data-size]").forEach(button => {
+  button.addEventListener("click", () => {
+    state.size = button.dataset.size;
 
-        `${uploadedPhotos.length} / ${MAX_PHOTOS} photos selected`;
+    edited();
+    selected("[data-size]", "size", state.size);
+    slideAfterChoice(1);
+  });
+});
 
-}
-
-
-/* PAYMENT */
-
-function selectPayment(
-    payment,
-    button
-) {
-
-    selectedPayment =
-        payment;
-
-
-    document
-        .querySelectorAll(
-            ".payment-card"
-        )
-        .forEach(
-            card => {
-
-                card.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-
-    button.classList.add(
-        "active"
-    );
-
-
-    document.getElementById(
-        "payment-result"
-    ).textContent =
-
-        `Payment method: ${payment}`;
-
-}
-
-
-/* ORDER NUMBER */
-
-function createOrderNumber() {
-
-    return (
-
-        "HF-" +
-
-        Date.now()
-            .toString()
-            .slice(-6)
-
-    );
-
-}
-
-
-/* CHECKOUT */
-
-function checkout() {
-
-    if (
-        cart.length === 0
-    ) {
-
-        alert(
-            "Your cart is empty."
-        );
-
-
-        return;
-
+document.querySelectorAll("[data-theme]").forEach(button => {
+  button.addEventListener("click", () => {
+    if (state.theme !== button.dataset.theme) {
+      state.design = "";
     }
 
-
-    if (
-        uploadedPhotos.length === 0
-    ) {
-
-        alert(
-            "Please choose at least one reference photo."
-        );
-
-
-        return;
-
-    }
-
-
-    const name =
-        document.getElementById(
-            "customer-name"
-        ).value.trim();
-
-
-    const phone =
-        document.getElementById(
-            "customer-phone"
-        ).value.trim();
-
-
-    const area =
-        document.getElementById(
-            "customer-area"
-        ).value.trim();
-
-
-    const address =
-        document.getElementById(
-            "customer-address"
-        ).value.trim();
-
-
-    const instructions =
-        document.getElementById(
-            "instructions"
-        ).value.trim();
-
-
-    if (
-        !name
-        ||
-        !phone
-        ||
-        !area
-        ||
-        !address
-    ) {
-
-        alert(
-            "Please complete all delivery details."
-        );
-
-
-        return;
-
-    }
-
-
-    if (
-        !selectedPayment
-    ) {
-
-        alert(
-            "Please choose Cash or Whish Money."
-        );
-
-
-        return;
-
-    }
-
-
-    const orderNumber =
-        createOrderNumber();
-
-
-    let total =
-        0;
-
-
-    let orderText =
-        "";
-
-
-    cart.forEach(
-
-        (
-            item,
-            index
-        ) => {
-
-
-            total +=
-                item.price;
-
-
-            orderText += `
-
-${index + 1}. ${item.option}
-Theme: ${item.theme}
-Size: ${item.size} (${item.dimensions})
-Price: $${item.price.toFixed(2)}`;
-
-        }
-
-    );
-
-
-    let message =
-
-`Hello HEARTIFACT! ♡
-
-I would like to place an order.
-
-ORDER NUMBER: ${orderNumber}
-
-CUSTOMER
-Name: ${name}
-Phone: ${phone}
-Area: ${area}
-Address: ${address}
-
-ORDER
-${orderText}
-
-Reference photos selected: ${uploadedPhotos.length}
-
-Special Instructions:
-${instructions || "None"}
-
-Payment: ${selectedPayment}
-
-Delivery: FREE across Lebanon
-Estimated time: 4–5 business days
-
-TOTAL: $${total.toFixed(2)}`;
-
-
-    if (
-        selectedPayment ===
-        "Whish Money"
-    ) {
-
-        message += `
-
-Whish Money:
-${WHISH_NUMBER}`;
-
-    }
-
-
-    message += `
-
-I will send my reference photos here on WhatsApp.`;
-
-
-    openWhatsApp(
-        message
-    );
-
+    state.theme = button.dataset.theme;
+
+    edited();
+    selected("[data-theme]", "theme", state.theme);
+    drawDesigns();
+    slideAfterChoice(2);
+  });
+});
+
+$("instructions").addEventListener("input", event => {
+  clearTimeout(advanceTimer);
+  state.instructions = event.target.value;
+  edited();
+});
+
+$("instructions").addEventListener("focus", () => {
+  clearTimeout(advanceTimer);
+});
+
+for (const key of ["name", "phone", "area", "address", "payment"]) {
+  $(key).addEventListener("input", () => {
+    state[key] = $(key).value;
+
+    edited();
+    $("whish-note").hidden = state.payment !== "Whish Money";
+  });
 }
 
-
-/* WHATSAPP */
-
-function openWhatsApp(
-    message
-) {
-
-    const url =
-
-        "https://wa.me/" +
-
-        WHATSAPP_NUMBER +
-
-        "?text=" +
-
-        encodeURIComponent(
-            message
-        );
-
-
-    window.open(
-        url,
-        "_blank"
-    );
-
+function adjustQuantity(change) {
+  clearTimeout(advanceTimer);
+  state.quantity = Math.max(1, Math.min(10, state.quantity + change));
+  edited();
 }
 
+$("quantity-minus").addEventListener("click", () => adjustQuantity(-1));
+$("quantity-plus").addEventListener("click", () => adjustQuantity(1));
 
-/* CART ANIMATION */
+$("details-form").addEventListener("submit", event => {
+  event.preventDefault();
+  openPhotoForm();
+});
 
-function animateCart() {
+$("custom-size").addEventListener("click", () => {
+  openWhatsApp(
+    "Hello HEARTIFACT! I’d like a quote for a customized Memory House size."
+  );
+});
 
-    const cartCount =
-        document.getElementById(
-            "cart-count"
-        );
+$("contact-whatsapp").addEventListener("click", () => {
+  openWhatsApp(
+    "Hello HEARTIFACT! I have an idea for a customized Memory House."
+  );
+});
 
+$("send-whatsapp").addEventListener("click", () => {
+  if (!submittedOrder) return;
 
-    cartCount.animate(
+  sendCopy(submittedOrder, photosVerified);
+  whatsappOpened = true;
+  showPage("thank-you");
+});
 
-        [
+$("fallback-whatsapp").addEventListener("click", () => {
+  if (fallbackOrder) {
+    showWhatsAppStep(fallbackOrder, false);
+  }
+});
 
-            {
-                transform:
-                    "scale(1)"
-            },
+$("new-order").addEventListener("click", () => {
+  state = freshOrder();
+  submittedOrder = null;
+  fallbackOrder = null;
+  whatsappOpened = false;
+  photosVerified = false;
 
-            {
-                transform:
-                    "scale(1.8) rotate(10deg)"
-            },
+  $("details-form").reset();
+  $("instructions").value = "";
+  $("whish-note").hidden = true;
 
-            {
-                transform:
-                    "scale(1)"
-            }
+  selected("[data-size]", "size", "");
+  selected("[data-theme]", "theme", "");
 
-        ],
+  drawDesigns();
+  edited();
+  showStep(0);
+});
 
-        {
-            duration:
-                500
-        }
+let touchStart = null;
 
-    );
+$("slide-area").addEventListener("touchstart", event => {
+  if (event.target.closest("input,textarea,select,button,a")) {
+    touchStart = null;
+    return;
+  }
 
+  const touch = event.touches[0];
+
+  touchStart = {
+    x: touch.clientX,
+    y: touch.clientY
+  };
+}, { passive: true });
+
+$("slide-area").addEventListener("touchend", event => {
+  if (!touchStart || activePage !== "shop") return;
+
+  const touch = event.changedTouches[0];
+  const dx = touch.clientX - touchStart.x;
+  const dy = touch.clientY - touchStart.y;
+
+  touchStart = null;
+
+  if (Math.abs(dx) < 65 || Math.abs(dx) < Math.abs(dy) * 1.5) {
+    return;
+  }
+
+  if (dx > 0 && step > 0) {
+    showStep(step - 1);
+  } else if (dx < 0 && step < 3) {
+    showStep(step + 1);
+  }
+}, { passive: true });
+
+window.addEventListener("hashchange", () => {
+  const page = location.hash.slice(1);
+
+  if (page === "about" || page === "contact") {
+    showPage(page);
+  } else if (page === "confirmation" && submittedOrder) {
+    showPage(page);
+  } else if (page === "thank-you" && whatsappOpened) {
+    showPage(page);
+  } else {
+    showStep(0);
+  }
+});
+
+const initialPage = location.hash.slice(1);
+
+updateSummary();
+showStep(0);
+
+if (["about", "contact"].includes(initialPage)) {
+  showPage(initialPage);
 }
-
-
-/* TOAST */
-
-function showToast() {
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    setTimeout(
-        () => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        },
-        2200
-    );
-
-}
-
-
-/* SCROLL ANIMATIONS */
-
-const observer =
-    new IntersectionObserver(
-
-        entries => {
-
-
-            entries.forEach(
-                entry => {
-
-
-                    if (
-                        entry.isIntersecting
-                    ) {
-
-                        entry.target.classList.add(
-                            "active"
-                        );
-
-                    }
-
-                }
-            );
-
-        },
-
-        {
-            threshold:
-                .1
-        }
-
-    );
-
-
-document
-    .querySelectorAll(
-        ".reveal"
-    )
-    .forEach(
-        element => {
-
-            observer.observe(
-                element
-            );
-
-        }
-    );
-
-
-/* START */
-
-updateCart();
-
-updatePhotoCount();
