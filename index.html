@@ -1,170 +1,1556 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Personalized HEARTIFACT memories. Choose your design and order with reference photos. Free delivery across Lebanon.">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>HEARTIFACT | Your Story Made Visible</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://tally.so/widgets/embed.js" async></script>
-    <script src="script.js" defer></script>
+
+    <meta
+        name="description"
+        content="Create your personalized HEARTIFACT with custom mini characters, special moments, locations and memories. Free delivery across Lebanon."
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
+
+
 <body>
-<header>
-    <button class="brand" data-page="home" type="button">HEARTIFACT</button>
-    <nav aria-label="Main navigation">
-        <button data-page="home" type="button">Home</button>
-        <button data-page="products" type="button">Products</button>
-        <button data-page="about" type="button">About</button>
-        <button data-page="contact" type="button">Contact</button>
-    </nav>
-</header>
 
-<main>
-    <section id="home" class="screen" aria-labelledby="home-title">
-        <div class="screen-body hero">
-            <p class="eyebrow">PERSONALIZED · MEANINGFUL · YOURS</p>
-            <div class="heart" aria-hidden="true">♡</div>
-            <h1 id="home-title" tabindex="-1">Your story,<br><span>made visible.</span></h1>
-            <p>Turn your favorite people, places and memories into a personalized HEARTIFACT.</p>
-            <button type="button" class="primary" data-page="products">Create your HEARTIFACT →</button>
-            <div class="perks"><span>100% customized</span><span>Free Lebanon delivery</span><span>4–5 business days</span></div>
-        </div>
-    </section>
 
-    <section id="products" class="screen" hidden aria-labelledby="step-title">
-        <div class="flow-header">
-            <p id="step-count" class="eyebrow">STEP 1 OF 7</p>
-            <h2 id="step-title" tabindex="-1">Choose your size</h2>
-            <p id="step-description"></p>
-            <progress id="step-progress" max="7" value="1" aria-label="Order progress"></progress>
-        </div>
+<!-- BACKGROUND EFFECTS -->
 
-        <div id="step-body" class="screen-body">
-            <div class="step" data-step="0">
-                <div class="sizes">
-                    <button type="button" class="size-card" data-size="Small" aria-pressed="false">
-                        <img class="product-placeholder" src="coming-soon.png" alt="Coming soon">
-                        <span class="product-info"><strong>Small la casa de la memoria</strong><span lang="ar" dir="rtl">بيت الذكريات</span><span>20 × 20 cm</span><b>$30</b></span>
-                        <span class="selection-mark" aria-hidden="true">✓</span>
-                    </button>
-                    <button type="button" class="size-card" data-size="Large" aria-pressed="false">
-                        <img class="product-placeholder" src="coming-soon.png" alt="Coming soon">
-                        <span class="product-info"><strong>Large la casa de la memoria</strong><span lang="ar" dir="rtl">بيت الذكريات</span><span>30 × 30 cm · Most popular</span><b>$40</b></span>
-                        <span class="selection-mark" aria-hidden="true">✓</span>
-                    </button>
-                </div>
-                <button type="button" class="text-button" data-custom="size">Need a custom size? Ask us on WhatsApp ↗</button>
+<div class="background-effects">
+
+    <div class="glow glow1"></div>
+    <div class="glow glow2"></div>
+    <div class="glow glow3"></div>
+
+    <span class="floating-heart heart1">♡</span>
+    <span class="floating-heart heart2">♡</span>
+    <span class="floating-heart heart3">✦</span>
+    <span class="floating-heart heart4">♡</span>
+
+</div>
+
+
+
+<!-- NAVIGATION -->
+
+<nav>
+
+    <a
+        href="#home"
+        class="logo"
+    >
+        HEARTIFACT
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="#home">
+            Home
+        </a>
+
+        <a href="#products">
+            Products
+        </a>
+
+        <a href="#about">
+            About
+        </a>
+
+        <a href="#contact">
+            Contact
+        </a>
+
+        <a
+            href="#cart"
+            class="cart-nav"
+        >
+            Cart
+
+            <span id="cart-count">
+                0
+            </span>
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- HERO -->
+
+<section
+    id="home"
+    class="hero"
+>
+
+    <div class="hero-ring ring1"></div>
+    <div class="hero-ring ring2"></div>
+
+
+    <div class="hero-content reveal">
+
+        <p class="small-title">
+            PERSONALIZED • MEANINGFUL • YOURS
+        </p>
+
+
+        <h1>
+
+            YOUR STORY,
+
+            <span>
+                MADE VISIBLE.
+            </span>
+
+        </h1>
+
+
+        <p class="hero-text">
+
+            We transform the people, places and memories
+            you love into a personalized HEARTIFACT,
+            featuring mini characters created around
+            your story.
+
+        </p>
+
+
+        <a
+            href="#products"
+            class="main-btn"
+        >
+
+            Create Your HEARTIFACT
+
+            <span>
+                →
+            </span>
+
+        </a>
+
+
+        <div class="hero-info">
+
+
+            <div>
+
+                <strong>
+                    100%
+                </strong>
+
+                <span>
+                    Customized
+                </span>
+
             </div>
 
-            <div class="step" data-step="1" hidden>
-                <div class="theme-grid">
-                    <button type="button" class="choice" data-theme="Special Moments" aria-pressed="false"><span>♡</span><strong>Special Moments</strong><small>Weddings, birthdays and milestones</small></button>
-                    <button type="button" class="choice" data-theme="Friends & Family" aria-pressed="false"><span>♡</span><strong>Friends &amp; Family</strong><small>Your favorite people and memories</small></button>
-                    <button type="button" class="choice" data-theme="Locations" aria-pressed="false"><span>◇</span><strong>Locations</strong><small>A place close to your heart</small></button>
-                    <button type="button" class="choice" data-theme="Jobs" aria-pressed="false"><span>✦</span><strong>Jobs</strong><small>Careers, professions and passions</small></button>
-                </div>
+
+            <i></i>
+
+
+            <div>
+
+                <strong>
+                    FREE
+                </strong>
+
+                <span>
+                    Delivery in Lebanon
+                </span>
+
             </div>
 
-            <div class="step" data-step="2" hidden>
-                <input id="design" type="hidden">
-                <div id="design-grid" class="design-grid" role="group" aria-label="Choose your design"></div>
-                <div class="design-pagination">
-                    <button id="previous-designs" type="button" class="secondary">← Previous designs</button>
-                    <span id="design-page" aria-live="polite"></span>
-                    <button id="more-designs" type="button" class="secondary">More designs →</button>
-                </div>
-                <p class="hint">Choose an “Any…” option for your own idea, then describe it in the next step.</p>
-                <div class="quantity-card">
-                    <label for="quantity">Quantity</label>
-                    <div class="quantity-controls">
-                        <button id="quantity-minus" type="button" class="secondary" aria-label="Decrease quantity">−</button>
-                        <input id="quantity" type="number" min="1" max="10" step="1" value="1" inputmode="numeric">
-                        <button id="quantity-plus" type="button" class="secondary" aria-label="Increase quantity">+</button>
-                    </div>
-                </div>
+
+            <i></i>
+
+
+            <div>
+
+                <strong>
+                    4–5
+                </strong>
+
+                <span>
+                    Business Days
+                </span>
+
             </div>
 
-            <div class="step" data-step="3" hidden>
-                <label for="instructions">Tell us about your design <span class="optional">optional, except custom designs</span></label>
-                <textarea id="instructions" maxlength="1000" rows="5" placeholder="Clothing, colors, poses, background details, names or the memory you want to capture..."></textarea>
-                <div class="notice"><strong>Your reference photos</strong><p>You’ll choose and upload photos securely in the final Tally form. No need to send them separately through WhatsApp.</p></div>
-            </div>
 
-            <div class="step" data-step="4" hidden>
-                <div class="form-grid">
-                    <div><label for="customer-name">Full name</label><input id="customer-name" autocomplete="name" maxlength="100" placeholder="Your full name"></div>
-                    <div><label for="customer-phone">Phone number</label><input id="customer-phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="+961 71 123 456"></div>
-                    <div><label for="customer-area">Area / city</label><input id="customer-area" autocomplete="address-level2" maxlength="100" placeholder="Beirut, Baabda, Jounieh..."></div>
-                    <div><label for="customer-address">Full address</label><input id="customer-address" autocomplete="street-address" maxlength="250" placeholder="Street, building, floor..."></div>
-                </div>
-                <p class="hint">Free delivery across Lebanon.</p>
-            </div>
-
-            <div class="step" data-step="5" hidden>
-                <div class="payment-grid">
-                    <button type="button" class="choice" data-payment="Cash" aria-pressed="false"><span>$</span><strong>Cash</strong><small>Pay on delivery</small></button>
-                    <button type="button" class="choice" data-payment="Whish Money" aria-pressed="false"><span>W</span><strong>Whish Money</strong><small>+961 71 963 311</small></button>
-                </div>
-                <p class="hint">Selecting Whish Money does not make a payment. We’ll confirm payment details with you.</p>
-            </div>
-
-            <div class="step" data-step="6" hidden>
-                <div id="order-summary" class="summary"></div>
-                <div class="notice"><strong>Upload photos, then send a WhatsApp copy</strong><p>Choose your photos and press Submit in the photo form to save your order and send our email notification. Then send a copy of the order in WhatsApp.</p></div>
-                <div id="upload-fallback" class="notice" hidden>
-                    <strong>Open the photo form separately</strong>
-                    <p>The photo window could not load. Open the form below, upload your photos and press Submit. Then return here to send your WhatsApp copy.</p>
-                    <a id="fallback-form-link" class="primary" target="_blank" rel="noopener noreferrer">Open photo form ↗</a>
-                    <button id="fallback-whatsapp" type="button" class="secondary">Send WhatsApp copy</button>
-                    <p>This website cannot check a submission made in a separate tab. Submit the photo form before sending the WhatsApp copy.</p>
-                </div>
-                <button type="button" class="text-button" id="whatsapp-summary">Have a question? Message us on WhatsApp ↗</button>
-            </div>
         </div>
 
-        <p id="step-error" class="error" role="alert"></p>
-        <div class="flow-footer">
-            <button type="button" id="back-button" class="secondary">← Back</button>
-            <span id="running-total">$0.00</span>
-            <button type="button" id="next-button" class="primary">Next →</button>
-        </div>
-    </section>
+    </div>
 
-    <section id="confirmation" class="screen" hidden aria-labelledby="confirmation-title">
-        <div class="screen-body content-page">
-            <p class="eyebrow">PHOTO FORM SUBMITTED</p>
-            <div class="heart" aria-hidden="true">✓</div>
-            <h2 id="confirmation-title" tabindex="-1">Now send your<br><span>WhatsApp copy.</span></h2>
-            <p id="confirmed-order"></p>
-            <p>Your order and photos were submitted to Tally. The email notification will be sent according to our form settings.</p>
-            <button id="send-whatsapp" type="button" class="primary">Send order on WhatsApp ↗</button>
-            <p id="whatsapp-status" role="status" aria-live="polite">Tap the button, then press Send in WhatsApp. Photos are saved in Tally; this message includes the matching order number.</p>
-            <button id="new-order" type="button" class="secondary">Start a new order</button>
-        </div>
-    </section>
-    <section id="about" class="screen" hidden aria-labelledby="about-title">
-        <div class="screen-body content-page">
-            <p class="eyebrow">THE HEART BEHIND THE ART</p>
-            <h2 id="about-title" tabindex="-1">More than decoration.<br><span>It’s your story.</span></h2>
-            <p>HEARTIFACT turns memories, relationships, professions, destinations and meaningful moments into personalized pieces designed around you.</p>
-            <p>From the characters and clothing to the setting and smallest details, we customize everything to make your piece yours.</p>
-            <button type="button" class="primary" data-page="products">Create your HEARTIFACT →</button>
-        </div>
-    </section>
+</section>
 
-    <section id="contact" class="screen" hidden aria-labelledby="contact-title">
-        <div class="screen-body content-page">
-            <p class="eyebrow">TALK TO US</p>
-            <h2 id="contact-title" tabindex="-1">Have something<br><span>different in mind?</span></h2>
-            <p>A custom size, special idea or different theme? We’re only a message away.</p>
-            <button type="button" class="primary" data-custom="idea">WhatsApp us ↗</button>
-            <a class="contact-link" href="mailto:heartifact.lb@gmail.com">heartifact.lb@gmail.com</a>
-            <a class="contact-link" href="tel:+96171963311">+961 71 963 311</a>
+
+
+<!-- MOVING OFFER -->
+
+<div class="offer-bar">
+
+    <div class="offer-moving">
+
+        <span>
+            ✦ HEARTIFACT LAUNCH COLLECTION
+        </span>
+
+        <span>
+            ♡ PERSONALIZED JUST FOR YOU
+        </span>
+
+        <span>
+            ✦ FREE DELIVERY ACROSS LEBANON
+        </span>
+
+        <span>
+            ♡ SMALL $30 • BIG $40
+        </span>
+
+        <span>
+            ✦ HEARTIFACT LAUNCH COLLECTION
+        </span>
+
+        <span>
+            ♡ PERSONALIZED JUST FOR YOU
+        </span>
+
+    </div>
+
+</div>
+
+
+
+<!-- PRODUCTS -->
+
+<section
+    id="products"
+    class="section"
+>
+
+
+    <div class="section-heading reveal">
+
+        <p class="small-title">
+            STEP 01
+        </p>
+
+        <h2>
+            Choose Your Size
+        </h2>
+
+        <p>
+
+            Start your story by choosing
+            the HEARTIFACT size that works best for you.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="products-grid">
+
+
+        <!-- SMALL -->
+
+        <div class="product-card reveal">
+
+
+            <span class="launch-badge">
+                LAUNCH PRICE
+            </span>
+
+
+            <div class="product-image">
+
+                <img
+                    src="product1.png"
+                    alt="Small HEARTIFACT"
+                >
+
+            </div>
+
+
+            <p class="product-name">
+                SMALL
+            </p>
+
+
+            <h3>
+                20 × 20 cm
+            </h3>
+
+
+            <p>
+
+                Perfect for desks, shelves,
+                gifts and meaningful memories.
+
+            </p>
+
+
+            <div class="price">
+                $30
+            </div>
+
+
+            <button
+                onclick="chooseSize(
+                    'Small',
+                    '20 × 20 cm',
+                    30,
+                    this
+                )"
+            >
+
+                Choose Small
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
         </div>
-    </section>
-</main>
-<footer>HEARTIFACT · Made for your memories</footer>
-<noscript><p class="no-script">Please enable JavaScript to use the order steps. Contact heartifact.lb@gmail.com for help.</p></noscript>
+
+
+
+        <!-- BIG -->
+
+        <div class="product-card featured reveal">
+
+
+            <span class="popular-badge">
+                MOST POPULAR
+            </span>
+
+
+            <span class="launch-badge">
+                LAUNCH PRICE
+            </span>
+
+
+            <div class="product-image">
+
+                <img
+                    src="product1.png"
+                    alt="Big HEARTIFACT"
+                >
+
+            </div>
+
+
+            <p class="product-name">
+                BIG
+            </p>
+
+
+            <h3>
+                30 × 30 cm
+            </h3>
+
+
+            <p>
+
+                A larger statement piece that
+                gives your story even more presence.
+
+            </p>
+
+
+            <div class="price">
+                $40
+            </div>
+
+
+            <button
+                onclick="chooseSize(
+                    'Big',
+                    '30 × 30 cm',
+                    40,
+                    this
+                )"
+            >
+
+                Choose Big
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- CUSTOM -->
+
+        <div class="product-card reveal">
+
+
+            <div class="product-image">
+
+                <img
+                    src="product1.png"
+                    alt="Custom HEARTIFACT"
+                >
+
+            </div>
+
+
+            <p class="product-name">
+                CUSTOM
+            </p>
+
+
+            <h3>
+                Your Size
+            </h3>
+
+
+            <p>
+
+                Looking for different dimensions?
+                Tell us what you have in mind.
+
+            </p>
+
+
+            <div class="custom-price">
+                Custom Quote
+            </div>
+
+
+            <button
+                onclick="openWhatsApp(
+                    'Hello HEARTIFACT! I would like a quotation for a custom size.'
+                )"
+            >
+
+                Ask on WhatsApp
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- THEMES -->
+
+<section
+    id="themes"
+    class="themes-section"
+>
+
+
+    <div class="section-heading reveal">
+
+        <p class="small-title">
+            STEP 02
+        </p>
+
+        <h2>
+            What's Your Story?
+        </h2>
+
+        <p id="size-message">
+
+            Choose your size first,
+            then select a theme.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="themes-grid">
+
+
+        <button
+            class="theme-card reveal"
+            onclick="chooseTheme(
+                'Special Moments',
+                this
+            )"
+        >
+
+            <span class="theme-icon">
+                ♡
+            </span>
+
+            <h3>
+                Special Moments
+            </h3>
+
+            <p>
+
+                Celebrate the moments you never
+                want to forget.
+
+            </p>
+
+            <span class="arrow">
+                →
+            </span>
+
+        </button>
+
+
+
+        <button
+            class="theme-card reveal"
+            onclick="chooseTheme(
+                'Friends & Family',
+                this
+            )"
+        >
+
+            <span class="theme-icon">
+                ♡
+            </span>
+
+            <h3>
+                Friends & Family
+            </h3>
+
+            <p>
+
+                Turn your favorite people
+                into something unforgettable.
+
+            </p>
+
+            <span class="arrow">
+                →
+            </span>
+
+        </button>
+
+
+
+        <button
+            class="theme-card reveal"
+            onclick="chooseTheme(
+                'Locations',
+                this
+            )"
+        >
+
+            <span class="theme-icon">
+                ◇
+            </span>
+
+            <h3>
+                Locations
+            </h3>
+
+            <p>
+
+                Capture a city, destination
+                or place that means something to you.
+
+            </p>
+
+            <span class="arrow">
+                →
+            </span>
+
+        </button>
+
+
+
+        <button
+            class="theme-card reveal"
+            onclick="chooseTheme(
+                'Jobs',
+                this
+            )"
+        >
+
+            <span class="theme-icon">
+                ✦
+            </span>
+
+            <h3>
+                Jobs
+            </h3>
+
+            <p>
+
+                Celebrate a career,
+                profession or passion.
+
+            </p>
+
+            <span class="arrow">
+                →
+            </span>
+
+        </button>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- OPTIONS -->
+
+<section
+    id="options"
+    class="options-section"
+>
+
+
+    <div class="section-heading reveal">
+
+        <p class="small-title">
+            STEP 03
+        </p>
+
+        <h2 id="options-title">
+            Choose Your Design
+        </h2>
+
+        <p id="options-text">
+            Your options will appear here.
+        </p>
+
+    </div>
+
+
+    <div
+        id="options-container"
+        class="options-grid"
+    >
+    </div>
+
+
+
+    <div class="custom-message reveal">
+
+
+        <div class="big-heart">
+            ♡
+        </div>
+
+
+        <div>
+
+            <p class="small-title">
+                YOUR IDEA. YOUR HEARTIFACT.
+            </p>
+
+            <h3>
+                We Customize Everything.
+            </h3>
+
+            <p>
+
+                Don't see your idea above?
+                That's completely fine.
+                Tell us what you imagine
+                and we'll create it around you.
+
+            </p>
+
+        </div>
+
+
+        <button
+            onclick="openWhatsApp(
+                'Hello HEARTIFACT! I have a custom idea I would like to create.'
+            )"
+        >
+
+            Custom Request
+
+        </button>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- CART -->
+
+<section
+    id="cart"
+    class="cart-section"
+>
+
+
+    <div class="giant-heart">
+        ♡
+    </div>
+
+
+    <div class="section-heading reveal">
+
+        <p class="small-title">
+            STEP 04
+        </p>
+
+        <h2>
+            Make It Yours
+        </h2>
+
+        <p>
+
+            Add your photos and tell us how
+            you want your HEARTIFACT personalized.
+
+        </p>
+
+    </div>
+
+
+
+    <div
+        id="cart-items"
+        class="cart-items"
+    >
+    </div>
+
+
+
+    <!-- PHOTOS -->
+
+    <div class="checkout-box reveal">
+
+
+        <div class="box-title">
+
+            <p class="small-title">
+                YOUR PEOPLE
+            </p>
+
+            <h3>
+                Upload Reference Photos
+            </h3>
+
+            <p>
+
+                Upload clear photos so we can understand
+                how you want your mini characters to look.
+
+            </p>
+
+        </div>
+
+
+
+        <label
+            class="upload-box"
+            for="photo-upload"
+        >
+
+            <span class="upload-icon">
+                +
+            </span>
+
+            <strong>
+                Choose Photos
+            </strong>
+
+            <span>
+                Maximum 5 photos
+            </span>
+
+            <small>
+                JPG • PNG • WEBP
+            </small>
+
+            <input
+                type="file"
+                id="photo-upload"
+                accept="image/*"
+                multiple
+                onchange="previewPhotos(event)"
+            >
+
+        </label>
+
+
+
+        <div
+            id="photo-preview"
+            class="photo-preview"
+        >
+        </div>
+
+
+        <p
+            id="photo-count"
+            class="photo-count"
+        >
+            0 / 5 photos selected
+        </p>
+
+
+
+        <!-- SPECIAL INSTRUCTIONS -->
+
+        <div class="instructions">
+
+            <label for="instructions">
+
+                Special Instructions
+
+                <span>
+                    optional
+                </span>
+
+            </label>
+
+
+            <textarea
+                id="instructions"
+                placeholder="Example: clothing, colors, poses, background details or anything special you want us to know..."
+            ></textarea>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- CUSTOMER DETAILS -->
+
+    <div class="checkout-box reveal">
+
+
+        <div class="box-title">
+
+            <p class="small-title">
+                DELIVERY
+            </p>
+
+            <h3>
+                Your Details
+            </h3>
+
+            <p>
+                Delivery is FREE across Lebanon.
+            </p>
+
+        </div>
+
+
+
+        <div class="form-grid">
+
+
+            <label>
+
+                Full Name
+
+                <input
+                    id="customer-name"
+                    type="text"
+                    placeholder="Your full name"
+                >
+
+            </label>
+
+
+
+            <label>
+
+                Phone Number
+
+                <input
+                    id="customer-phone"
+                    type="tel"
+                    placeholder="03 123 456"
+                >
+
+            </label>
+
+
+
+            <label>
+
+                Area / City
+
+                <input
+                    id="customer-area"
+                    type="text"
+                    placeholder="Beirut, Baabda, Jounieh..."
+                >
+
+            </label>
+
+
+
+            <label>
+
+                Full Address
+
+                <input
+                    id="customer-address"
+                    type="text"
+                    placeholder="Street, building, floor..."
+                >
+
+            </label>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- PAYMENT -->
+
+    <div class="checkout-box reveal">
+
+
+        <div class="box-title">
+
+            <p class="small-title">
+                PAYMENT
+            </p>
+
+            <h3>
+                Choose How You Pay
+            </h3>
+
+        </div>
+
+
+
+        <div class="payment-grid">
+
+
+            <button
+                class="payment-card"
+                onclick="selectPayment(
+                    'Cash',
+                    this
+                )"
+            >
+
+                <span class="payment-icon">
+                    $
+                </span>
+
+                <strong>
+                    Cash
+                </strong>
+
+                <small>
+                    Pay on delivery
+                </small>
+
+            </button>
+
+
+
+            <button
+                class="payment-card"
+                onclick="selectPayment(
+                    'Whish Money',
+                    this
+                )"
+            >
+
+                <span class="payment-icon">
+                    W
+                </span>
+
+                <strong>
+                    Whish Money
+                </strong>
+
+                <small>
+                    +961 71 963 311
+                </small>
+
+            </button>
+
+
+        </div>
+
+
+
+        <p
+            id="payment-result"
+            class="payment-result"
+        >
+
+            No payment method selected.
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- BENEFITS -->
+
+    <div class="benefits reveal">
+
+
+        <div>
+
+            <span>
+                ♡
+            </span>
+
+            <h3>
+                Made For You
+            </h3>
+
+            <p>
+
+                Every HEARTIFACT is individually personalized.
+
+            </p>
+
+        </div>
+
+
+
+        <div>
+
+            <span>
+                ✦
+            </span>
+
+            <h3>
+                FREE Delivery
+            </h3>
+
+            <p>
+
+                Delivery is free across Lebanon.
+
+            </p>
+
+        </div>
+
+
+
+        <div>
+
+            <span>
+                ◷
+            </span>
+
+            <h3>
+                4–5 Business Days
+            </h3>
+
+            <p>
+
+                Your personalized order takes
+                approximately 4–5 business days.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- TOTAL -->
+
+    <div class="total-box reveal">
+
+
+        <div>
+
+            <span>
+                Products
+            </span>
+
+            <strong>
+
+                $<span id="cart-total">
+                    0.00
+                </span>
+
+            </strong>
+
+        </div>
+
+
+
+        <div>
+
+            <span>
+                Delivery
+            </span>
+
+            <strong class="free">
+                FREE
+            </strong>
+
+        </div>
+
+
+
+        <div class="grand-total">
+
+            <span>
+                Total
+            </span>
+
+            <strong>
+
+                $<span id="grand-total">
+                    0.00
+                </span>
+
+            </strong>
+
+        </div>
+
+
+
+        <button
+            class="checkout-btn"
+            onclick="checkout()"
+        >
+
+            Complete Order on WhatsApp
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+
+        <button
+            class="clear-btn"
+            onclick="clearCart()"
+        >
+
+            Clear Cart
+
+        </button>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- HOW IT WORKS -->
+
+<section class="how-section">
+
+
+    <div class="section-heading reveal">
+
+        <p class="small-title">
+            FROM YOUR HEART TO OUR HANDS
+        </p>
+
+        <h2>
+            How It Works
+        </h2>
+
+    </div>
+
+
+
+    <div class="steps">
+
+
+        <div class="step reveal">
+
+            <span>
+                01
+            </span>
+
+            <h3>
+                Choose
+            </h3>
+
+            <p>
+                Pick your size, theme and design.
+            </p>
+
+        </div>
+
+
+
+        <div class="step reveal">
+
+            <span>
+                02
+            </span>
+
+            <h3>
+                Upload
+            </h3>
+
+            <p>
+                Upload photos of the people
+                you want us to create.
+            </p>
+
+        </div>
+
+
+
+        <div class="step reveal">
+
+            <span>
+                03
+            </span>
+
+            <h3>
+                We Create
+            </h3>
+
+            <p>
+                We bring your mini characters
+                and story to life.
+            </p>
+
+        </div>
+
+
+
+        <div class="step reveal">
+
+            <span>
+                04
+            </span>
+
+            <h3>
+                Delivered
+            </h3>
+
+            <p>
+
+                Your HEARTIFACT arrives with
+                FREE delivery across Lebanon.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ABOUT -->
+
+<section
+    id="about"
+    class="about-section"
+>
+
+
+    <div class="about-glow"></div>
+
+
+    <div class="about-content reveal">
+
+        <p class="small-title">
+            THE HEART BEHIND THE ART
+        </p>
+
+        <h2>
+
+            More Than Decoration.
+
+            <span>
+                It's Your Story.
+            </span>
+
+        </h2>
+
+
+        <p>
+
+            HEARTIFACT turns memories, relationships,
+            professions, destinations and meaningful
+            moments into personalized pieces designed
+            around you.
+
+        </p>
+
+
+        <p>
+
+            From the characters and clothing to the
+            setting and smallest details, we customize
+            everything to make your piece truly yours.
+
+        </p>
+
+
+        <a
+            href="#products"
+            class="main-btn"
+        >
+
+            Create Yours
+
+            <span>
+                →
+            </span>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- CONTACT -->
+
+<section
+    id="contact"
+    class="contact-section"
+>
+
+
+    <div class="section-heading reveal">
+
+        <p class="small-title">
+            TALK TO US
+        </p>
+
+        <h2>
+            Have Something Different in Mind?
+        </h2>
+
+        <p>
+
+            HEARTIFACT is built around customization.
+            Tell us your idea.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="contact-card reveal">
+
+
+        <div class="contact-heart">
+            ♡
+        </div>
+
+
+        <h3>
+            Contact HEARTIFACT
+        </h3>
+
+
+        <p>
+
+            Custom size, special idea,
+            different theme or anything else —
+            we're only a message away.
+
+        </p>
+
+
+        <button
+            onclick="openWhatsApp(
+                'Hello HEARTIFACT! I would like to ask about a custom order.'
+            )"
+        >
+
+            WhatsApp Us
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+
+        <div class="contact-details">
+
+            <a href="mailto:heloukevin961@gmail.com">
+                heloukevin961@gmail.com
+            </a>
+
+            <span>
+                +961 71 963 311
+            </span>
+
+            <span>
+                heartifactlb.com
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- FOOTER -->
+
+<footer>
+
+
+    <div class="footer-heart">
+        ♡
+    </div>
+
+
+    <h2>
+        HEARTIFACT
+    </h2>
+
+
+    <p>
+        Your story, made visible.
+    </p>
+
+
+
+    <div class="footer-features">
+
+        <span>
+            CUSTOMIZED
+        </span>
+
+        <b>
+            •
+        </b>
+
+        <span>
+            FREE DELIVERY
+        </span>
+
+        <b>
+            •
+        </b>
+
+        <span>
+            4–5 BUSINESS DAYS
+        </span>
+
+        <b>
+            •
+        </b>
+
+        <span>
+            CASH / WHISH
+        </span>
+
+    </div>
+
+
+
+    <div class="footer-links">
+
+        <a href="#home">
+            Home
+        </a>
+
+        <a href="#products">
+            Products
+        </a>
+
+        <a href="#about">
+            About
+        </a>
+
+        <a href="#contact">
+            Contact
+        </a>
+
+    </div>
+
+
+
+    <a
+        class="email-link"
+        href="mailto:heloukevin961@gmail.com"
+    >
+
+        heloukevin961@gmail.com
+
+    </a>
+
+
+    <p class="domain">
+        heartifactlb.com
+    </p>
+
+
+    <p class="copyright">
+        © 2026 HEARTIFACT. All rights reserved.
+    </p>
+
+
+</footer>
+
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast"
+>
+
+    Added to your cart ♡
+
+</div>
+
+
+
+<script src="script.js"></script>
+
 </body>
+
 </html>
