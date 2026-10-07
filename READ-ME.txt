@@ -1,0 +1,15 @@
+HEARTIFACT — Mocha update
+
+1. Extract this ZIP first.
+2. Keep index.html, style.css, script.js, coming-soon.png and the assets folder together.
+3. Double-click index.html to preview locally.
+4. Upload these files AND the entire assets folder to the root of Heartifactlb/heartifact on GitHub. Keep your existing CNAME and README.md.
+5. Commit the changes. Wait for the GitHub Pages deployment to finish, then refresh heartifactlb.com.
+
+The assets folder contains the new logo and every theme/design background. Copying only the code without these assets will leave the pictures missing.
+
+Mini: $29.99. Grand: $39.99 (displayed with $45 crossed out). Custom sizes open a WhatsApp quote request.
+Tally form: KYdbyD. WhatsApp: +96171963311. Contact: heartifact.lb@gmail.com.
+
+Local checks passed for six screen widths, pricing, guarded steps, all design assets, navigation, custom quotes, and simulated Tally-to-WhatsApp flow. No real customer order was sent by these checks.
+This package is ready to upload; it has not been published by Codex.
