@@ -1,239 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#94735c">
-  <meta name="description" content="The Memory House by HEARTIFACT. Personalized keepsakes for your people, places and memories.">
-
-  <title>HEARTIFACT · The Memory House</title>
-
-  <link rel="stylesheet" href="style.css?v=wood12">
-  <script src="https://tally.so/widgets/embed.js" async></script>
-  <script src="script.js?v=wood12" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personalized HEARTIFACT memories. Choose your design and order with reference photos. Free delivery across Lebanon.">
+    <title>HEARTIFACT | Your Story Made Visible</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://tally.so/widgets/embed.js" async></script>
+    <script src="script.js" defer></script>
 </head>
-
 <body>
-  <header class="site-header">
-    <button class="wordmark" data-page="home" aria-label="HEARTIFACT home">
-      <img src="assets/logo.png" alt="heartifact">
-    </button>
-
+<header>
+    <button class="brand" data-page="home" type="button">HEARTIFACT</button>
     <nav aria-label="Main navigation">
-      <button data-page="home">Home</button>
-      <button data-page="home">Create</button>
-      <button data-page="about">About</button>
-      <button data-page="contact">Contact</button>
+        <button data-page="home" type="button">Home</button>
+        <button data-page="products" type="button">Products</button>
+        <button data-page="about" type="button">About</button>
+        <button data-page="contact" type="button">Contact</button>
     </nav>
-  </header>
+</header>
 
-  <main>
-    <section id="shop" class="page">
-      <div class="step-nav" aria-label="Order steps">
-        <button data-go="0"><span>1</span> Size</button>
-        <button data-go="1"><span>2</span> Theme</button>
-        <button data-go="2"><span>3</span> Design</button>
-        <button data-go="3"><span>4</span> Your details</button>
-      </div>
+<main>
+    <section id="home" class="screen" aria-labelledby="home-title">
+        <div class="screen-body hero">
+            <p class="eyebrow">PERSONALIZED · MEANINGFUL · YOURS</p>
+            <div class="heart" aria-hidden="true">♡</div>
+            <h1 id="home-title" tabindex="-1">Your story,<br><span>made visible.</span></h1>
+            <p>Turn your favorite people, places and memories into a personalized HEARTIFACT.</p>
+            <button type="button" class="primary" data-page="products">Create your HEARTIFACT →</button>
+            <div class="perks"><span>100% customized</span><span>Free Lebanon delivery</span><span>4–5 business days</span></div>
+        </div>
+    </section>
 
-      <div id="slide-area">
-        <section class="slide home-slide" data-step="0">
-          <div class="hero-copy">
-            <p class="eyebrow">YOUR MEMORIES, WITH A LITTLE MAGIC</p>
-            <h1 tabindex="-1">A little house.<br>A whole lot of <em>heart.</em></h1>
-            <p>Your people. Your places. Your story.<br>Meet <strong>The Memory House.</strong></p>
-            <p class="arabic" lang="ar" dir="rtl">بيت الذكريات</p>
-            <div class="doodle" aria-hidden="true">♡ <i>made for you</i></div>
-          </div>
+    <section id="products" class="screen" hidden aria-labelledby="step-title">
+        <div class="flow-header">
+            <p id="step-count" class="eyebrow">STEP 1 OF 7</p>
+            <h2 id="step-title" tabindex="-1">Choose your size</h2>
+            <p id="step-description"></p>
+            <progress id="step-progress" max="7" value="1" aria-label="Order progress"></progress>
+        </div>
 
-          <div>
-            <div class="section-heading">
-              <h2>Choose your size</h2>
-              <span class="tag">YOURS TO CUSTOMIZE</span>
+        <div id="step-body" class="screen-body">
+            <div class="step" data-step="0">
+                <div class="sizes">
+                    <button type="button" class="size-card" data-size="Small" aria-pressed="false">
+                        <img class="product-placeholder" src="coming-soon.png" alt="Coming soon">
+                        <span class="product-info"><strong>Small la casa de la memoria</strong><span lang="ar" dir="rtl">بيت الذكريات</span><span>20 × 20 cm</span><b>$30</b></span>
+                        <span class="selection-mark" aria-hidden="true">✓</span>
+                    </button>
+                    <button type="button" class="size-card" data-size="Large" aria-pressed="false">
+                        <img class="product-placeholder" src="coming-soon.png" alt="Coming soon">
+                        <span class="product-info"><strong>Large la casa de la memoria</strong><span lang="ar" dir="rtl">بيت الذكريات</span><span>30 × 30 cm · Most popular</span><b>$40</b></span>
+                        <span class="selection-mark" aria-hidden="true">✓</span>
+                    </button>
+                </div>
+                <button type="button" class="text-button" data-custom="size">Need a custom size? Ask us on WhatsApp ↗</button>
             </div>
 
-            <div class="size-grid">
-              <button class="size-card" data-size="Mini" aria-pressed="false">
-                <img class="preview" src="coming-soon.png" alt="Coming soon">
-                <strong>Mini</strong>
-                <b class="price">$29.99</b>
-                <small>The Memory House</small>
-                <span class="card-arrow" aria-hidden="true">↗</span>
-              </button>
-
-              <button class="size-card" data-size="Grand" aria-pressed="false">
-                <span class="popular">BEST SELLER</span>
-                <img class="preview" src="coming-soon.png" alt="Coming soon">
-                <strong>Grand</strong>
-                <span class="price"><del>$45</del> <b>$39.99</b></span>
-                <small>The Memory House</small>
-                <span class="card-arrow" aria-hidden="true">↗</span>
-              </button>
-
-              <button class="size-card" id="custom-size" aria-label="Customized size. Ask for a quote on WhatsApp.">
-                <span class="custom-art" aria-hidden="true">⌂</span>
-                <strong>Custom</strong>
-                <span class="price secret" aria-hidden="true">$<span>00.00</span></span>
-                <small>Something customized?</small>
-                <span class="custom-bottom">Let’s talk <span>↗</span></span>
-              </button>
+            <div class="step" data-step="1" hidden>
+                <div class="theme-grid">
+                    <button type="button" class="choice" data-theme="Special Moments" aria-pressed="false"><span>♡</span><strong>Special Moments</strong><small>Weddings, birthdays and milestones</small></button>
+                    <button type="button" class="choice" data-theme="Friends & Family" aria-pressed="false"><span>♡</span><strong>Friends &amp; Family</strong><small>Your favorite people and memories</small></button>
+                    <button type="button" class="choice" data-theme="Locations" aria-pressed="false"><span>◇</span><strong>Locations</strong><small>A place close to your heart</small></button>
+                    <button type="button" class="choice" data-theme="Jobs" aria-pressed="false"><span>✦</span><strong>Jobs</strong><small>Careers, professions and passions</small></button>
+                </div>
             </div>
 
-            <p class="micro">Tap a size to begin. Every house is made around you.</p>
-          </div>
-        </section>
-
-        <section class="slide" data-step="1" hidden>
-          <div class="title-block">
-            <p class="eyebrow">STEP 02 · THE FEELING</p>
-            <h2 tabindex="-1">What’s your <em>story?</em></h2>
-            <p>Choose a theme. We’ll make it yours.</p>
-          </div>
-
-          <div id="theme-grid" class="theme-grid"></div>
-          <p class="micro centered">Tap your favorite to continue.</p>
-        </section>
-
-        <section class="slide" data-step="2" hidden>
-          <div class="title-block">
-            <p class="eyebrow">STEP 03 · THE LITTLE DETAILS</p>
-            <h2 tabindex="-1">Choose your <em>design.</em></h2>
-          </div>
-
-          <label for="instructions">
-            Tell us about your design
-            <span id="note-optional">(optional)</span>
-          </label>
-
-          <textarea
-            id="instructions"
-            rows="2"
-            maxlength="1000"
-            placeholder="Clothing, colors, poses, names or the memory you want to capture..."
-          ></textarea>
-
-          <p id="design-hint" class="micro">Add a note if you like, then tap a design.</p>
-          <div id="design-grid" class="design-grid"></div>
-
-          <div class="design-tail">
-            <div class="quantity">
-              <span>Quantity</span>
-              <button id="quantity-minus" aria-label="Decrease quantity">−</button>
-              <output id="quantity">1</output>
-              <button id="quantity-plus" aria-label="Increase quantity">+</button>
+            <div class="step" data-step="2" hidden>
+                <input id="design" type="hidden">
+                <div id="design-grid" class="design-grid" role="group" aria-label="Choose your design"></div>
+                <div class="design-pagination">
+                    <button id="previous-designs" type="button" class="secondary">← Previous designs</button>
+                    <span id="design-page" aria-live="polite"></span>
+                    <button id="more-designs" type="button" class="secondary">More designs →</button>
+                </div>
+                <p class="hint">Choose an “Any…” option for your own idea, then describe it in the next step.</p>
+                <div class="quantity-card">
+                    <label for="quantity">Quantity</label>
+                    <div class="quantity-controls">
+                        <button id="quantity-minus" type="button" class="secondary" aria-label="Decrease quantity">−</button>
+                        <input id="quantity" type="number" min="1" max="10" step="1" value="1" inputmode="numeric">
+                        <button id="quantity-plus" type="button" class="secondary" aria-label="Increase quantity">+</button>
+                    </div>
+                </div>
             </div>
 
-            <span class="micro">Tap a design to continue ↗</span>
-          </div>
-        </section>
+            <div class="step" data-step="3" hidden>
+                <label for="instructions">Tell us about your design <span class="optional">optional, except custom designs</span></label>
+                <textarea id="instructions" maxlength="1000" rows="5" placeholder="Clothing, colors, poses, background details, names or the memory you want to capture..."></textarea>
+                <div class="notice"><strong>Your reference photos</strong><p>You’ll choose and upload photos securely in the final Tally form. No need to send them separately through WhatsApp.</p></div>
+            </div>
 
-        <section class="slide" data-step="3" hidden>
-          <div class="title-block">
-            <p class="eyebrow">STEP 04 · ALMOST YOURS</p>
-            <h2 tabindex="-1">Your <em>details.</em></h2>
-          </div>
-
-          <div class="checkout-layout">
-            <form id="details-form">
-              <div class="field-grid">
-                <div>
-                  <label for="name">Full name</label>
-                  <input id="name" name="name" autocomplete="name" placeholder="Your full name" maxlength="100" required>
+            <div class="step" data-step="4" hidden>
+                <div class="form-grid">
+                    <div><label for="customer-name">Full name</label><input id="customer-name" autocomplete="name" maxlength="100" placeholder="Your full name"></div>
+                    <div><label for="customer-phone">Phone number</label><input id="customer-phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="+961 71 123 456"></div>
+                    <div><label for="customer-area">Area / city</label><input id="customer-area" autocomplete="address-level2" maxlength="100" placeholder="Beirut, Baabda, Jounieh..."></div>
+                    <div><label for="customer-address">Full address</label><input id="customer-address" autocomplete="street-address" maxlength="250" placeholder="Street, building, floor..."></div>
                 </div>
+                <p class="hint">Free delivery across Lebanon.</p>
+            </div>
 
-                <div>
-                  <label for="phone">Phone number</label>
-                  <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+961 71 123 456" maxlength="30" required>
+            <div class="step" data-step="5" hidden>
+                <div class="payment-grid">
+                    <button type="button" class="choice" data-payment="Cash" aria-pressed="false"><span>$</span><strong>Cash</strong><small>Pay on delivery</small></button>
+                    <button type="button" class="choice" data-payment="Whish Money" aria-pressed="false"><span>W</span><strong>Whish Money</strong><small>+961 71 963 311</small></button>
                 </div>
+                <p class="hint">Selecting Whish Money does not make a payment. We’ll confirm payment details with you.</p>
+            </div>
 
-                <div>
-                  <label for="area">Area / city</label>
-                  <input id="area" name="area" autocomplete="address-level2" placeholder="Your area" maxlength="100" required>
+            <div class="step" data-step="6" hidden>
+                <div id="order-summary" class="summary"></div>
+                <div class="notice"><strong>Upload photos, then send a WhatsApp copy</strong><p>Choose your photos and press Submit in the photo form to save your order and send our email notification. Then send a copy of the order in WhatsApp.</p></div>
+                <div id="upload-fallback" class="notice" hidden>
+                    <strong>Open the photo form separately</strong>
+                    <p>The photo window could not load. Open the form below, upload your photos and press Submit. Then return here to send your WhatsApp copy.</p>
+                    <a id="fallback-form-link" class="primary" target="_blank" rel="noopener noreferrer">Open photo form ↗</a>
+                    <button id="fallback-whatsapp" type="button" class="secondary">Send WhatsApp copy</button>
+                    <p>This website cannot check a submission made in a separate tab. Submit the photo form before sending the WhatsApp copy.</p>
                 </div>
+                <button type="button" class="text-button" id="whatsapp-summary">Have a question? Message us on WhatsApp ↗</button>
+            </div>
+        </div>
 
-                <div>
-                  <label for="address">Address</label>
-                  <input id="address" name="address" autocomplete="street-address" placeholder="Street, building, floor" maxlength="250" required>
-                </div>
-              </div>
-
-              <div class="payment-row">
-                <label for="payment">Pay with</label>
-                <select id="payment" name="payment">
-                  <option value="Cash">Cash on delivery</option>
-                  <option value="Whish Money">Whish Money</option>
-                </select>
-              </div>
-
-              <p id="whish-note" class="micro" hidden>We’ll confirm Whish payment details with you.</p>
-
-              <button type="submit" class="primary submit-order">
-                Add photos &amp; place order <span>↗</span>
-              </button>
-
-              <p class="micro">Upload your photos in the window that opens, then press Submit.</p>
-            </form>
-
-            <aside class="order-card">
-              <p class="eyebrow">YOUR MEMORY HOUSE</p>
-              <h3 id="summary-name"></h3>
-              <div class="summary-row"><span>Quantity</span><span id="summary-quantity"></span></div>
-              <div class="summary-total"><span>Total</span><strong id="summary-total"></strong></div>
-            </aside>
-          </div>
-
-          <div id="upload-fallback" class="fallback" hidden>
-            <strong>Open your photo form</strong>
-            <p>The photo window couldn’t load. Open the form below, submit your photos, then return here.</p>
-            <a id="fallback-link" class="primary" target="_blank" rel="noopener noreferrer">Open photo form ↗</a>
-            <button id="fallback-whatsapp" class="text-link">I submitted my photos · Continue to WhatsApp</button>
-          </div>
-        </section>
-      </div>
-
-      <p id="error" role="alert"></p>
-      <div class="flow-bottom">
-        <span>Made for your memories ♡</span>
-        <strong id="running-total"></strong>
-      </div>
+        <p id="step-error" class="error" role="alert"></p>
+        <div class="flow-footer">
+            <button type="button" id="back-button" class="secondary">← Back</button>
+            <span id="running-total">$0.00</span>
+            <button type="button" id="next-button" class="primary">Next →</button>
+        </div>
     </section>
 
-    <section id="about" class="page info-page" hidden>
-      <p class="eyebrow">THE HEART BEHIND THE HOUSE</p>
-      <h2 tabindex="-1">Little details.<br><em>Big feelings.</em></h2>
-      <p>We turn your people, places and favorite moments into The Memory House: a keepsake designed around your story.</p>
-      <p>From clothing and characters to colors and settings, your ideas make every house personal.</p>
-      <button class="primary" data-page="home">Create yours ↗</button>
+    <section id="confirmation" class="screen" hidden aria-labelledby="confirmation-title">
+        <div class="screen-body content-page">
+            <p class="eyebrow">PHOTO FORM SUBMITTED</p>
+            <div class="heart" aria-hidden="true">✓</div>
+            <h2 id="confirmation-title" tabindex="-1">Now send your<br><span>WhatsApp copy.</span></h2>
+            <p id="confirmed-order"></p>
+            <p>Your order and photos were submitted to Tally. The email notification will be sent according to our form settings.</p>
+            <button id="send-whatsapp" type="button" class="primary">Send order on WhatsApp ↗</button>
+            <p id="whatsapp-status" role="status" aria-live="polite">Tap the button, then press Send in WhatsApp. Photos are saved in Tally; this message includes the matching order number.</p>
+            <button id="new-order" type="button" class="secondary">Start a new order</button>
+        </div>
+    </section>
+    <section id="about" class="screen" hidden aria-labelledby="about-title">
+        <div class="screen-body content-page">
+            <p class="eyebrow">THE HEART BEHIND THE ART</p>
+            <h2 id="about-title" tabindex="-1">More than decoration.<br><span>It’s your story.</span></h2>
+            <p>HEARTIFACT turns memories, relationships, professions, destinations and meaningful moments into personalized pieces designed around you.</p>
+            <p>From the characters and clothing to the setting and smallest details, we customize everything to make your piece yours.</p>
+            <button type="button" class="primary" data-page="products">Create your HEARTIFACT →</button>
+        </div>
     </section>
 
-    <section id="contact" class="page info-page" hidden>
-      <p class="eyebrow">LET’S MAKE SOMETHING PERSONAL</p>
-      <h2 tabindex="-1">An idea?<br><em>We’re listening.</em></h2>
-      <p>A custom size, a special memory, or something entirely your own.</p>
-      <button class="primary" id="contact-whatsapp">Chat on WhatsApp ↗</button>
-      <a href="mailto:heartifact.lb@gmail.com">heartifact.lb@gmail.com</a>
+    <section id="contact" class="screen" hidden aria-labelledby="contact-title">
+        <div class="screen-body content-page">
+            <p class="eyebrow">TALK TO US</p>
+            <h2 id="contact-title" tabindex="-1">Have something<br><span>different in mind?</span></h2>
+            <p>A custom size, special idea or different theme? We’re only a message away.</p>
+            <button type="button" class="primary" data-custom="idea">WhatsApp us ↗</button>
+            <a class="contact-link" href="mailto:heartifact.lb@gmail.com">heartifact.lb@gmail.com</a>
+            <a class="contact-link" href="tel:+96171963311">+961 71 963 311</a>
+        </div>
     </section>
-
-    <section id="confirmation" class="page info-page" hidden>
-      <p class="eyebrow">ONE LAST STEP · REQUIRED</p>
-      <h2 tabindex="-1">Send your order<br><em>on WhatsApp.</em></h2>
-      <div class="notice">
-        <strong>Finish your order in WhatsApp.</strong>
-        <p>Tap the button below, then press <strong>Send</strong> inside WhatsApp. Opening the chat alone does not send your order.</p>
-      </div>
-      <button class="primary" id="send-whatsapp">Open WhatsApp &amp; send order ↗</button>
-      <p class="micro">Your uploaded photos stay with your Tally submission.</p>
-    </section>
-
-    <section id="thank-you" class="page info-page" hidden>
-      <span class="success-mark" aria-hidden="true">♡</span>
-      <h2 tabindex="-1">Thank you,<br><em>memory maker.</em></h2>
-      <p>WhatsApp has been opened with your order. Remember to press Send in the chat. We’ll review your details and reply there.</p>
-      <button class="text-link" id="new-order">Make another memory</button>
-    </section>
-  </main>
-
-  <footer>HEARTIFACT ♡ A home for your memories</footer>
-  <noscript>Please enable JavaScript or contact heartifact.lb@gmail.com.</noscript>
+</main>
+<footer>HEARTIFACT · Made for your memories</footer>
+<noscript><p class="no-script">Please enable JavaScript to use the order steps. Contact heartifact.lb@gmail.com for help.</p></noscript>
 </body>
 </html>
