@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#94735c">
+<meta name="description" content="HEARTIFACT. Something special is on its way.">
+<title>HEARTIFACT — Coming soon</title>
+<style>
+:root{color-scheme:light;--ink:#332821;--mocha:#94735c;--cream:#f6e9da;--tan:#cba88e}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;width:100%}
+body{font-family:Arial,sans-serif;color:var(--ink);background:var(--mocha);overflow-x:hidden}
+.stage{min-height:100svh;position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;padding:38px 28px 22px;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#dcc1a9 0%,#c3a086 36%,#94735c 85%)}
+.stage:before,.stage:after{content:"";position:absolute;z-index:-1;width:72vw;height:110vh;border:1px solid #f6e9da40;border-radius:50%;top:-8vh;transform:rotate(-29deg);pointer-events:none}
+.stage:before{left:-53vw;animation:sway 15s ease-in-out infinite alternate}.stage:after{right:-53vw;animation:sway 18s ease-in-out infinite alternate-reverse}
+.brand{width:clamp(190px,24vw,280px);height:auto;display:block;mix-blend-mode:multiply}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 0 65px;width:100%;position:relative}
+.label{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.29em;text-transform:uppercase;margin:0 0 30px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 5px #3328210a}
+h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(78px,12vw,168px);line-height:.88;letter-spacing:-.065em;margin:0;position:relative}
+h1 span{display:block}h1 em{font-weight:400;color:var(--cream);letter-spacing:-.045em;display:block;margin-top:10px}
+.copy{font-family:Georgia,'Times New Roman',serif;font-size:clamp(17px,2vw,22px);line-height:1.6;margin:32px 0 0;max-width:350px}
+.heart{width:26px;height:26px;margin-top:28px;stroke:var(--ink);fill:none;stroke-width:1.1;animation:breathe 4s ease-in-out infinite}
+footer{display:flex;justify-content:space-between;gap:20px;width:min(100%,1300px);border-top:1px solid #33282133;padding-top:18px;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
+.spark{position:absolute;font-family:Georgia,serif;font-size:28px;font-weight:400;color:#f6e9da99;animation:drift 8s ease-in-out infinite}
+.spark.one{top:27%;left:17%}.spark.two{bottom:27%;right:17%;font-size:19px;animation-delay:-3s}
+@keyframes sway{to{transform:translateY(3vh) rotate(-20deg)}}
+@keyframes drift{50%{transform:translateY(-14px) rotate(30deg);opacity:.5}}
+@keyframes breathe{50%{transform:scale(1.1)}}
+@media(max-width:600px){.stage{padding:28px 22px 20px}.brand{width:195px}main{padding:40px 0 48px}.label{font-size:8px;margin-bottom:27px}h1{font-size:clamp(76px,21vw,116px)}.spark.one{left:3%;top:20%}.spark.two{right:3%;bottom:20%}footer{font-size:8px;letter-spacing:.09em}.copy{max-width:270px}}
+@media(max-height:650px){.stage{padding-top:22px}.brand{width:170px}main{padding:26px 0}.label{margin-bottom:20px}h1{font-size:clamp(68px,12vh,100px)}.copy{margin-top:20px}.heart{margin-top:16px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+<header><img class="brand" src="/assets/logo.png" width="1000" height="248" alt="heartifact"></header>
+<main>
+<span class="spark one" aria-hidden="true">✧</span><span class="spark two" aria-hidden="true">✧</span>
+<p class="label"><span class="dot" aria-hidden="true"></span>A little anticipation</p>
+<h1><span>Coming</span><em>soon.</em></h1>
+<p class="copy">Something special is on its way.<br>We’re keeping it a surprise.</p>
+<svg class="heart" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 24S3 17 3 9.5C3 3.5 11 2 14 8c3-6 11-4.5 11 1.5C25 17 14 24 14 24Z"/></svg>
+</main>
+<footer><span>HEARTIFACT</span><span>Made with heart. Worth the wait.</span></footer>
+</div>
+</body>
+</html>
