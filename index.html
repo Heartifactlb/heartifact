@@ -1,239 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#AE7F62">
-  <meta name="description" content="The Memory House by HEARTIFACT. Personalized keepsakes for your people, places and memories.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#AE7F62">
+<meta name="description" content="HEARTIFACT. Something special is on its way.">
+<title>HEARTIFACT — Coming soon</title>
+<style>
+:root{color-scheme:light;--ink:#231810;--mocha:#AE7F62;--cream:#FCCDAC;--tan:#613D28}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;width:100%}
+body{font-family:Arial,sans-serif;color:var(--ink);background:var(--mocha);overflow-x:hidden}
+.stage{min-height:100svh;position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;padding:38px 28px 22px;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#AE7F62 0%,#AE7F62 36%,#AE7F62 85%)}
+.stage:before,.stage:after{content:"";position:absolute;z-index:-1;width:72vw;height:110vh;border:1px solid #FCCDAC40;border-radius:50%;top:-8vh;transform:rotate(-29deg);pointer-events:none}
+.stage:before{left:-53vw;animation:sway 15s ease-in-out infinite alternate}.stage:after{right:-53vw;animation:sway 18s ease-in-out infinite alternate-reverse}
+.brand{width:clamp(190px,24vw,280px);height:auto;display:block;mix-blend-mode:normal}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 0 65px;width:100%;position:relative}
+.label{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.29em;text-transform:uppercase;margin:0 0 30px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 5px #2318100a}
+h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(78px,12vw,168px);line-height:.88;letter-spacing:-.065em;margin:0;position:relative}
+h1 span{display:block}h1 em{font-weight:400;color:var(--cream);letter-spacing:-.045em;display:block;margin-top:10px}
+.copy{font-family:Georgia,'Times New Roman',serif;font-size:clamp(17px,2vw,22px);line-height:1.6;margin:32px 0 0;max-width:350px}
+.heart{width:26px;height:26px;margin-top:28px;stroke:var(--ink);fill:none;stroke-width:1.1;animation:breathe 4s ease-in-out infinite}
+footer{display:flex;justify-content:space-between;gap:20px;width:min(100%,1300px);border-top:1px solid #23181033;padding-top:18px;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
+.spark{position:absolute;font-family:Georgia,serif;font-size:28px;font-weight:400;color:#FCCDAC99;animation:drift 8s ease-in-out infinite}
+.spark.one{top:27%;left:17%}.spark.two{bottom:27%;right:17%;font-size:19px;animation-delay:-3s}
+@keyframes sway{to{transform:translateY(3vh) rotate(-20deg)}}
+@keyframes drift{50%{transform:translateY(-14px) rotate(30deg);opacity:.5}}
+@keyframes breathe{50%{transform:scale(1.1)}}
+@media(max-width:600px){.stage{padding:28px 22px 20px}.brand{width:195px}main{padding:40px 0 48px}.label{font-size:8px;margin-bottom:27px}h1{font-size:clamp(76px,21vw,116px)}.spark.one{left:3%;top:20%}.spark.two{right:3%;bottom:20%}footer{font-size:8px;letter-spacing:.09em}.copy{max-width:270px}}
+@media(max-height:650px){.stage{padding-top:22px}.brand{width:170px}main{padding:26px 0}.label{margin-bottom:20px}h1{font-size:clamp(68px,12vh,100px)}.copy{margin-top:20px}.heart{margin-top:16px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
 
-  <title>HEARTIFACT · The Memory House</title>
-
-  <link rel="stylesheet" href="style.css?v=earth-mobile3">
-  <script src="https://tally.so/widgets/embed.js" async></script>
-  <script src="script.js?v=earth-mobile3" defer></script>
+/* Reference palette: FCCDAC, AE7F62, 613D28, 231810, 080808, 625F5D. */
+.stage{background:radial-gradient(ellipse at 50% 32%,#AE7F62 0%,#AE7F62 38%,#613D28 100%)}
+h1{color:#231810}.copy{color:#231810}.brand{width:clamp(210px,26vw,310px)}
+footer{color:#FCCDAC;border-color:#FCCDAC55}
+.floating-hearts{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;color:#FCCDAC}
+.floating-hearts span{position:absolute;left:var(--x);bottom:-90px;font:48px Georgia,serif;opacity:0;animation:rise var(--speed) linear infinite;animation-delay:var(--delay)}
+@keyframes rise{0%{transform:translateY(0) rotate(-12deg);opacity:0}12%,80%{opacity:.18}100%{transform:translateY(-120svh) rotate(18deg);opacity:0}}
+@media(max-width:600px){.brand{width:210px}.floating-hearts span{font-size:34px}}
+</style>
 </head>
-
 <body>
-  <header class="site-header">
-    <button class="wordmark" data-page="home" aria-label="HEARTIFACT home">
-      <img src="assets/logo.png" alt="heartifact">
-    </button>
-
-    <nav aria-label="Main navigation">
-      <button data-page="home">Home</button>
-      <button data-page="home">Create</button>
-      <button data-page="about">About</button>
-      <button data-page="contact">Contact</button>
-    </nav>
-  </header>
-
-  <main>
-    <section id="shop" class="page">
-      <div class="step-nav" aria-label="Order steps">
-        <button data-go="0"><span>1</span> Size</button>
-        <button data-go="1"><span>2</span> Theme</button>
-        <button data-go="2"><span>3</span> Design</button>
-        <button data-go="3"><span>4</span> Your details</button>
-      </div>
-
-      <div id="slide-area">
-        <section class="slide home-slide" data-step="0">
-          <div class="hero-copy">
-            <p class="eyebrow">YOUR MEMORIES, WITH A LITTLE MAGIC</p>
-            <h1 tabindex="-1">A little house.<br>A whole lot of <em>heart.</em></h1>
-            <p>Your people. Your places. Your story.<br>Meet <strong>The Memory House.</strong></p>
-            <p class="arabic" lang="ar" dir="rtl">بيت الذكريات</p>
-            <div class="doodle" aria-hidden="true">♡ <i>made for you</i></div>
-          </div>
-
-          <div>
-            <div class="section-heading">
-              <h2>Choose your size</h2>
-              <span class="tag">YOURS TO CUSTOMIZE</span>
-            </div>
-
-            <div class="size-grid">
-              <button class="size-card" data-size="Mini" aria-pressed="false">
-                <img class="preview" src="coming-soon.png" alt="Coming soon">
-                <strong>Mini</strong>
-                <b class="price">$29.99</b>
-                <small>The Memory House</small>
-                
-              </button>
-
-              <button class="size-card" data-size="Grand" aria-pressed="false">
-                <span class="popular">BEST SELLER</span>
-                <img class="preview" src="coming-soon.png" alt="Coming soon">
-                <strong>Grand</strong>
-                <span class="price"><del>$45</del> <b>$39.99</b></span>
-                <small>The Memory House</small>
-                
-              </button>
-
-              <button class="size-card" id="custom-size" aria-label="Customized size. Ask for a quote on WhatsApp.">
-                <span class="custom-art" aria-hidden="true">⌂</span>
-                <strong>Custom</strong>
-                <span class="price secret" aria-hidden="true">$<span>00.00</span></span>
-                <small>Something customized?</small>
-                <span class="custom-bottom">Let’s talk</span>
-              </button>
-            </div>
-
-            <p class="micro">Tap a size to begin. Every house is made around you.</p>
-          </div>
-        </section>
-
-        <section class="slide" data-step="1" hidden>
-          <div class="title-block">
-            <p class="eyebrow">STEP 02 · THE FEELING</p>
-            <h2 tabindex="-1">What’s your <em>story?</em></h2>
-            <p>Choose a theme. We’ll make it yours.</p>
-          </div>
-
-          <div id="theme-grid" class="theme-grid"></div>
-          <p class="micro centered">Tap your favorite to continue.</p>
-        </section>
-
-        <section class="slide" data-step="2" hidden>
-          <div class="title-block">
-            <p class="eyebrow">STEP 03 · THE LITTLE DETAILS</p>
-            <h2 tabindex="-1">Choose your <em>design.</em></h2>
-          </div>
-
-          <label for="instructions">
-            Tell us about your design
-            <span id="note-optional">(optional)</span>
-          </label>
-
-          <textarea
-            id="instructions"
-            rows="2"
-            maxlength="1000"
-            placeholder="Clothing, colors, poses, names or the memory you want to capture..."
-          ></textarea>
-
-          <p id="design-hint" class="micro">Add a note if you like, then tap a design.</p>
-          <div id="design-grid" class="design-grid"></div>
-
-          <div class="design-tail">
-            <div class="quantity">
-              <span>Quantity</span>
-              <button id="quantity-minus" aria-label="Decrease quantity">−</button>
-              <output id="quantity">1</output>
-              <button id="quantity-plus" aria-label="Increase quantity">+</button>
-            </div>
-
-            <span class="micro">Tap a design to continue ↗</span>
-          </div>
-        </section>
-
-        <section class="slide" data-step="3" hidden>
-          <div class="title-block">
-            <p class="eyebrow">STEP 04 · ALMOST YOURS</p>
-            <h2 tabindex="-1">Your <em>details.</em></h2>
-          </div>
-
-          <div class="checkout-layout">
-            <form id="details-form">
-              <div class="field-grid">
-                <div>
-                  <label for="name">Full name</label>
-                  <input id="name" name="name" autocomplete="name" placeholder="Your full name" maxlength="100" required>
-                </div>
-
-                <div>
-                  <label for="phone">Phone number</label>
-                  <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+961 71 123 456" maxlength="30" required>
-                </div>
-
-                <div>
-                  <label for="area">Area / city</label>
-                  <input id="area" name="area" autocomplete="address-level2" placeholder="Your area" maxlength="100" required>
-                </div>
-
-                <div>
-                  <label for="address">Address</label>
-                  <input id="address" name="address" autocomplete="street-address" placeholder="Street, building, floor" maxlength="250" required>
-                </div>
-              </div>
-
-              <div class="payment-row">
-                <label for="payment">Pay with</label>
-                <select id="payment" name="payment">
-                  <option value="Cash">Cash on delivery</option>
-                  <option value="Whish Money">Whish Money</option>
-                </select>
-              </div>
-
-              <p id="whish-note" class="micro" hidden>We’ll confirm Whish payment details with you.</p>
-
-              <button type="submit" class="primary submit-order">
-                Add photos &amp; place order <span>↗</span>
-              </button>
-
-              <p class="micro">Upload your photos in the window that opens, then press Submit.</p>
-            </form>
-
-            <aside class="order-card">
-              <p class="eyebrow">YOUR MEMORY HOUSE</p>
-              <h3 id="summary-name"></h3>
-              <div class="summary-row"><span>Quantity</span><span id="summary-quantity"></span></div>
-              <div class="summary-total"><span>Total</span><strong id="summary-total"></strong></div>
-            </aside>
-          </div>
-
-          <div id="upload-fallback" class="fallback" hidden>
-            <strong>Open your photo form</strong>
-            <p>The photo window couldn’t load. Open the form below, submit your photos, then return here.</p>
-            <a id="fallback-link" class="primary" target="_blank" rel="noopener noreferrer">Open photo form ↗</a>
-            <button id="fallback-whatsapp" class="text-link">I submitted my photos · Continue to WhatsApp</button>
-          </div>
-        </section>
-      </div>
-
-      <p id="error" role="alert"></p>
-      <div class="flow-bottom">
-        <span>Made for your memories ♡</span>
-        <strong id="running-total"></strong>
-      </div>
-    </section>
-
-    <section id="about" class="page info-page" hidden>
-      <p class="eyebrow">THE HEART BEHIND THE HOUSE</p>
-      <h2 tabindex="-1">Little details.<br><em>Big feelings.</em></h2>
-      <p>We turn your people, places and favorite moments into The Memory House: a keepsake designed around your story.</p>
-      <p>From clothing and characters to colors and settings, your ideas make every house personal.</p>
-      <button class="primary" data-page="home">Create yours ↗</button>
-    </section>
-
-    <section id="contact" class="page info-page" hidden>
-      <p class="eyebrow">LET’S MAKE SOMETHING PERSONAL</p>
-      <h2 tabindex="-1">An idea?<br><em>We’re listening.</em></h2>
-      <p>A custom size, a special memory, or something entirely your own.</p>
-      <button class="primary" id="contact-whatsapp">Chat on WhatsApp ↗</button>
-      <a href="mailto:heartifact.lb@gmail.com">heartifact.lb@gmail.com</a>
-    </section>
-
-    <section id="confirmation" class="page info-page" hidden>
-      <p class="eyebrow">ONE LAST STEP · REQUIRED</p>
-      <h2 tabindex="-1">Send your order<br><em>on WhatsApp.</em></h2>
-      <div class="notice">
-        <strong>Finish your order in WhatsApp.</strong>
-        <p>Tap the button below, then press <strong>Send</strong> inside WhatsApp. Opening the chat alone does not send your order.</p>
-      </div>
-      <button class="primary" id="send-whatsapp">Open WhatsApp &amp; send order ↗</button>
-      <p class="micro">Your uploaded photos stay with your Tally submission.</p>
-    </section>
-
-    <section id="thank-you" class="page info-page" hidden>
-      <span class="success-mark" aria-hidden="true">♡</span>
-      <h2 tabindex="-1">Thank you,<br><em>memory maker.</em></h2>
-      <p>WhatsApp has been opened with your order. Remember to press Send in the chat. We’ll review your details and reply there.</p>
-      <button class="text-link" id="new-order">Make another memory</button>
-    </section>
-  </main>
-
-  <footer>HEARTIFACT ♡ A home for your memories</footer>
-  <noscript>Please enable JavaScript or contact heartifact.lb@gmail.com.</noscript>
+<div class="stage">
+<div class="floating-hearts" aria-hidden="true"><span style="--x:5%;--speed:22s;--delay:-3s">♡</span><span style="--x:19%;--speed:26s;--delay:-12s">♡</span><span style="--x:32%;--speed:24s;--delay:-6s">♡</span><span style="--x:49%;--speed:30s;--delay:-18s">♡</span><span style="--x:67%;--speed:25s;--delay:-15s">♡</span><span style="--x:80%;--speed:22s;--delay:-9s">♡</span><span style="--x:93%;--speed:29s;--delay:-21s">♡</span></div>
+<header><img class="brand" src="assets/logo.png" width="1000" height="248" alt="heartifact"></header>
+<main>
+<span class="spark one" aria-hidden="true">♡</span><span class="spark two" aria-hidden="true">♡</span>
+<p class="label"><span class="dot" aria-hidden="true"></span>A little anticipation</p>
+<h1><span>Coming</span><em>soon.</em></h1>
+<p class="copy">Something special is on its way.<br>We’re keeping it a surprise.</p>
+<svg class="heart" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 24S3 17 3 9.5C3 3.5 11 2 14 8c3-6 11-4.5 11 1.5C25 17 14 24 14 24Z"/></svg>
+</main>
+<footer><span>HEARTIFACT</span><span>Made with heart. Worth the wait.</span></footer>
+</div>
 </body>
 </html>
