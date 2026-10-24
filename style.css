@@ -86,7 +86,7 @@ main { flex: 1; min-height: 0; display: flex; justify-content: center; padding: 
 .page { width: 100%; max-width: 1120px; min-height: 0; display: flex; flex-direction: column; }
 
 #shop {
-  background: #FCCDACf5;
+  background: rgba(252, 205, 172, .72);
   border: 1px solid #FCCDAC80;
   border-radius: 26px;
   padding: 15px 22px 0;
@@ -345,3 +345,43 @@ nav button.active, .step-nav button[aria-current="step"], button:active { backgr
 .primary { background:#613D28; color:#FCCDAC; }
 .primary:active { background:var(--selected); }
 .price, .summary-total strong { color:#080808; }
+
+/* Compact phone size selector, including browser toolbar space. */
+@media (max-width: 760px) {
+  .home-slide { gap: 9px; padding-top: 3px; padding-bottom: 6px; }
+  .home-slide h1 { font-size: clamp(25px, 7.4vw, 31px); margin: 6px 0; }
+  .hero-copy > p:not(.eyebrow) { line-height: 1.4; }
+  .hero-copy .arabic { margin-top: 3px; font-size: 15px; }
+  .section-heading { margin-bottom: 6px; }
+  .section-heading h2 { font-size: 21px; }
+  .size-card { padding: 7px 7px 9px; gap: 5px; }
+  .preview, .custom-art { height: 45px; margin: 16px 0 2px; }
+  .custom-art { font-size: 42px; }
+  .size-card > strong { font-size: 21px; }
+  .size-card .price { font-size: 15px; min-height: 21px; gap: 3px; }
+  .size-card small { font-size: 9px; }
+  .custom-bottom { font-size: 10px; }
+  .home-slide .micro { margin-top: 5px; font-size: 9px; }
+}
+@media (max-width: 760px) and (max-height: 620px) {
+  .home-slide .eyebrow { font-size: 7px; }
+  .home-slide h1 { font-size: 25px; }
+  .home-slide { gap: 6px; }
+  .hero-copy > p:not(.eyebrow) { font-size: 11px; }
+  .preview, .custom-art { height: 36px; }
+  .size-card { gap: 4px; }
+}
+@media (max-width: 760px) and (max-height: 620px) {
+ .site-header { padding-top: 3px; padding-bottom: 3px; }
+ .wordmark img { width: 125px; max-height: 31px; }
+ nav button { min-height: 32px; }
+ .home-slide h1 { font-size: 23px; margin: 3px 0; }
+ .home-slide .eyebrow { display:none; }
+ .hero-copy .arabic { font-size: 13px; }
+ .section-heading h2 { font-size: 19px; }
+ .size-card > strong { font-size: 19px; }
+}
+@media (max-width: 760px) and (max-height: 620px) {
+ .home-slide { gap: 4px; padding-bottom: 2px; }
+ .preview, .custom-art { height: 32px; }
+}
