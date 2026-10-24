@@ -1,0 +1,5 @@
+HEARTIFACT ORIGINAL DESIGN - NEW PALETTE
+Extract All, then open index.html.
+Original layout, animated hearts and houses, image cards and order flow retained.
+Logo: heart #613D28, ifact #FCCDAC. Grey selection #625F5D.
+Public website unchanged. Live Tally/WhatsApp integrations retained: test submissions can create real orders.

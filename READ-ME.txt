@@ -13,3 +13,4 @@ Tally form: KYdbyD. WhatsApp: +96171963311. Contact: heartifact.lb@gmail.com.
 
 Local checks passed for six screen widths, pricing, guarded steps, all design assets, navigation, custom quotes, and simulated Tally-to-WhatsApp flow. No real customer order was sent by these checks.
 This package is ready to upload; it has not been published by Codex.
+
