@@ -4,8 +4,8 @@ const $ = id => document.getElementById(id);
 const money = cents => "$" + (cents / 100).toFixed(2);
 
 const PRODUCTS = {
-  Mini: { name: "Mini · The Memory House", cents: 2999 },
-  Grand: { name: "Grand · The Memory House", cents: 3999 }
+  Mini: { name: "Mini · The Memory House", cents: 2500 },
+  Grand: { name: "Grand · The Memory House", cents: 3500 }
 };
 
 const THEMES = {
@@ -106,8 +106,7 @@ let activePage = "shop";
 let advanceTimer;
 let submittedOrder = null;
 let fallbackOrder = null;
-let whatsappOpened = false;
-let photosVerified = false;
+let checkoutRevision = 0;
 
 const total = () =>
   (PRODUCTS[state.size]?.cents || 0) * state.quantity;
@@ -121,6 +120,8 @@ function choices() {
 }
 
 function edited() {
+  checkoutRevision++;
+  submittedOrder = null;
   state.orderId = "";
   fallbackOrder = null;
   $("upload-fallback").hidden = true;
@@ -132,9 +133,10 @@ function updateSummary() {
   $("quantity").textContent = state.quantity;
   $("quantity-minus").disabled = state.quantity <= 1;
   $("quantity-plus").disabled = state.quantity >= 10;
-  $("running-total").textContent = state.size ? money(total()) : "";
+  $("running-total").textContent = state.size ? money(total()) + " · Free delivery" : "";
   $("summary-name").textContent =
     PRODUCTS[state.size]?.name || "The Memory House";
+  $("summary-design").textContent = [THEMES[state.theme]?.title, state.design].filter(Boolean).join(" · ");
   $("summary-quantity").textContent = state.quantity;
   $("summary-total").textContent = money(total());
 }
@@ -173,7 +175,7 @@ function validate(index) {
 }
 
 function showPage(page) {
-  if (page === "thank-you" && !whatsappOpened) return;
+  if (page === "thank-you" && !submittedOrder) return;
 
   clearTimeout(advanceTimer);
   activePage = page;
@@ -185,6 +187,7 @@ function showPage(page) {
   if (page !== "shop") {
     history.replaceState(null, "", "#" + page);
     $(page).querySelector("h2")?.focus({ preventScroll: true });
+    window.scrollTo?.({top: 0, behavior: "instant"});
   }
 }
 
@@ -201,7 +204,9 @@ function showStep(index) {
     }
   }
 
-  step = index;
+  step = Math.max(0, Math.min(3, index));
+  if (step >= 2) warmPhotoForm();
+  window.scrollTo?.({top: 0, behavior: "instant"});
   showPage("shop");
 
   document.querySelectorAll("[data-step]").forEach(panel => {
@@ -210,20 +215,22 @@ function showStep(index) {
     panel.classList.remove("enter");
 
     if (active) {
-      void panel.offsetWidth;
+      
       panel.classList.add("enter");
       panel.scrollTop = 0;
       panel.querySelector("h1,h2")?.focus({ preventScroll: true });
     }
   });
 
-  document.querySelectorAll("[data-go]").forEach(button => {
+document.querySelectorAll("[data-go]").forEach(button => {
     if (Number(button.dataset.go) === step) {
       button.setAttribute("aria-current", "step");
     } else {
       button.removeAttribute("aria-current");
     }
   });
+
+  $("previous-step").hidden = step === 0;
 
   $("error").textContent = "";
   updateSummary();
@@ -232,7 +239,7 @@ function showStep(index) {
 
 function advance(index) {
   clearTimeout(advanceTimer);
-  advanceTimer = setTimeout(() => showStep(index), 450);
+  advanceTimer = setTimeout(() => showStep(index), 120);
 }
 
 function photo(button, image) {
@@ -282,7 +289,7 @@ function updateNote() {
 
   $("design-hint").textContent = required
     ? "Describe your idea, then tap Anything customized."
-    : "Add a note if you like, then tap a design.";
+    : "Add a note if you like, then tap a design to go to your details.";
 }
 
 function drawDesigns() {
@@ -392,14 +399,15 @@ function photoCount(payload) {
   return count;
 }
 
-function whatsappStep(order, verified) {
+function finishOrder(order) {
   submittedOrder = order;
-  photosVerified = verified;
-  whatsappOpened = false;
-  showPage("confirmation");
+  $("confirmation-reference").textContent = "Order reference: " + order.id;
+  showPage("thank-you");
 }
 
-function openPhotoForm() {
+let openingPhotoForm = false;
+async function openPhotoForm() {
+  if (openingPhotoForm) return;
   if (!$("details-form").reportValidity()) return;
 
   for (let n = 0; n < 3; n++) {
@@ -445,11 +453,13 @@ function openPhotoForm() {
   const product = PRODUCTS[state.size];
 
   const message = [
+    `Order reference: ${state.orderId}`,
     `Product: ${product.name} — بيت الذكريات`,
     `Theme: ${THEMES[state.theme].title}`,
     `Design: ${state.design}`,
     `Quantity: ${state.quantity}`,
     `Unit price: ${money(product.cents)}`,
+    `Delivery: Free ($0.00)`,
     `Total: ${money(total())}`,
     `Customer: ${details.name}`,
     `Phone: ${phone}`,
@@ -477,26 +487,37 @@ function openPhotoForm() {
     order_details: message
   };
 
-  const url = new URL("https://tally.so/r/KYdbyD");
-
-  Object.entries(fields).forEach(([key, value]) => {
-    url.searchParams.set(key, value);
-  });
-
-  $("fallback-link").href = url.toString();
 
   const fallback = () => {
     $("upload-fallback").hidden = false;
     $("upload-fallback").scrollIntoView({ block: "nearest" });
   };
 
-  if (!window.Tally?.openPopup) {
+  openingPhotoForm = true;
+  const uploadButton = document.querySelector(".submit-order");
+  const readyLabel = uploadButton.innerHTML;
+  const loadRevision = checkoutRevision;
+  uploadButton.disabled = true;
+  uploadButton.textContent = "Opening photo upload…";
+  $("upload-status").textContent = "Loading your photo form…";
+  const resetUpload = () => {
+    openingPhotoForm = false;
+    uploadButton.disabled = false;
+    uploadButton.innerHTML = readyLabel;
+    $("upload-status").textContent = "Upload your photos and press Submit in the form to send your order request.";
+  };
+  await waitForTally();
+  if (loadRevision !== checkoutRevision) { resetUpload(); return; }
+  if (!window.Tally?.openPopup) { resetUpload(); fallback(); return; }
+  const loadTimeout = setTimeout(() => {
+    resetUpload();
+    $("upload-status").textContent = "The photo form is taking longer than usual. If it hasn’t opened, retry below.";
     fallback();
-    return;
-  }
+  }, 12000);
 
   $("upload-fallback").hidden = true;
   let sent = false;
+  const revision = checkoutRevision;
 
   try {
     window.Tally.openPopup("KYdbyD", {
@@ -505,25 +526,33 @@ function openPhotoForm() {
       overlay: true,
       hiddenFields: fields,
 
+      onLoad() { clearTimeout(loadTimeout); resetUpload(); $("upload-fallback").hidden = true; },
+
       onSubmit(payload) {
-        if (sent) return;
+        clearTimeout(loadTimeout); resetUpload();
+        if (sent || revision !== checkoutRevision) return;
         sent = true;
         order.photoCount = photoCount(payload);
         window.Tally.closePopup?.("KYdbyD");
-        whatsappStep(order, true);
+        finishOrder(order);
       },
 
       onClose() {
-        if (!sent) {
+        clearTimeout(loadTimeout); resetUpload();
+        if (!sent && revision === checkoutRevision) {
           $("error").textContent =
             "Upload your photos and press Submit to continue.";
         }
       }
     });
   } catch {
-    fallback();
+    clearTimeout(loadTimeout); resetUpload(); fallback();
   }
 }
+
+
+$("previous-step").addEventListener("click", () => showStep(step - 1));
+
 
 document.querySelectorAll("[data-page]").forEach(button => {
   button.addEventListener("click", () => {
@@ -586,33 +615,12 @@ $("contact-whatsapp").addEventListener("click", () => {
   openWhatsApp("Hello HEARTIFACT! I have an idea for a customized Memory House.");
 });
 
-$("fallback-whatsapp").addEventListener("click", () => {
-  if (fallbackOrder) whatsappStep(fallbackOrder, false);
-});
-
-$("send-whatsapp").addEventListener("click", () => {
-  if (!submittedOrder) return;
-
-  const photos = photosVerified
-    ? Number.isInteger(submittedOrder.photoCount)
-      ? `Photos submitted: ${submittedOrder.photoCount}`
-      : "Photos submitted in Tally."
-    : "Please match this order with my Tally photo submission.";
-
-  openWhatsApp(
-    `Hello HEARTIFACT! ♡\n\n${submittedOrder.details}\n\n${photos}`
-  );
-
-  whatsappOpened = true;
-  showPage("thank-you");
-});
+$("fallback-link").addEventListener("click", openPhotoForm);
 
 $("new-order").addEventListener("click", () => {
   state = freshOrder();
   submittedOrder = null;
   fallbackOrder = null;
-  whatsappOpened = false;
-  photosVerified = false;
   $("details-form").reset();
   $("instructions").value = "";
   $("whish-note").hidden = true;
@@ -626,7 +634,7 @@ $("new-order").addEventListener("click", () => {
 let touchStart = null;
 
 $("slide-area").addEventListener("touchstart", event => {
-  if (event.target.closest("input,textarea,select,button,a")) {
+  if (event.target.closest("input,textarea,select,button,a,.memory-gallery")) {
     touchStart = null;
     return;
   }
@@ -652,16 +660,96 @@ $("slide-area").addEventListener("touchend", event => {
 window.addEventListener("hashchange", () => {
   const page = location.hash.slice(1);
 
-  if (page === "about" || page === "contact") showPage(page);
-  else if (page === "confirmation" && submittedOrder) showPage(page);
-  else if (page === "thank-you" && whatsappOpened) showPage(page);
+  if (page === "about" || page === "contact" || page === "faq") showPage(page);
+  else if (page === "thank-you" && submittedOrder) showPage(page);
   else showStep(0);
 });
+
+// Use only the five supplied photos. Respect motion preferences and allow pausing.
+const galleryViews = [
+  {
+    "src": "assets/product-wedding.jpg",
+    "caption": "For your forever kind of love.",
+    "alt": "Wedding Memory House featuring a couple, white flowers and golden details"
+  },
+  {
+    "src": "assets/product-christmas.jpg",
+    "caption": "Your favorite people. Your coziest memory.",
+    "alt": "Christmas Memory House with five family characters, a dog and snowy decorations"
+  },
+  {
+    "src": "assets/product-mothers-day.jpg",
+    "caption": "A little house for her biggest love.",
+    "alt": "Pink Mother’s Day Memory House showing a mother embracing her son"
+  },
+  {
+    "src": "assets/product-paris.jpg",
+    "caption": "Some places stay with you forever.",
+    "alt": "Romantic Memory House featuring a couple in Paris and red rose petals"
+  },
+  {
+    "src": "assets/product-baby-girl.jpg",
+    "caption": "The beginning of a beautiful little story.",
+    "alt": "It’s a Girl Memory House with parents, a newborn baby and pink decorations"
+  }
+];
+let galleryView = 0;
+function showGalleryView(index) {
+  galleryView = (index + galleryViews.length) % galleryViews.length;
+  const view = galleryViews[galleryView];
+  $("gallery-image").src = view.src;
+  $("gallery-image").getAnimations().forEach(animation => animation.cancel());
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    $("gallery-image").animate([{opacity: .25}, {opacity: 1}], {duration: 240, easing: "ease-out"});
+  }
+  $("gallery-image").alt = view.alt;
+  
+}
+const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+let galleryTimer;
+function updateGalleryPlayback() {
+  clearInterval(galleryTimer);
+  if (document.hidden || motionPreference.matches) return;
+  galleryTimer = setInterval(() => {
+    if (activePage === "shop" && step === 0) showGalleryView(galleryView + 1);
+  }, 2500);
+}
+document.addEventListener("visibilitychange", updateGalleryPlayback);
+motionPreference.addEventListener("change", updateGalleryPlayback);
+// Fetch one next photo at a time rather than five originals at page load.
+function preloadNextPhoto() {
+  if (navigator.connection?.saveData || /(^|-)2g$/.test(navigator.connection?.effectiveType || "")) return;
+  const preload = new Image(); preload.src = galleryViews[(galleryView + 1) % galleryViews.length].src;
+}
+$("gallery-image").addEventListener("load", preloadNextPhoto);
+if ($("gallery-image").complete) preloadNextPhoto();
+
+updateGalleryPlayback();
+
+
+let photoFormWarmed = false;
+function warmPhotoForm() {
+  if (photoFormWarmed || navigator.connection?.saveData) return;
+  photoFormWarmed = true;
+  const hint = document.createElement("link");
+  hint.rel = "prefetch"; hint.as = "document";
+  hint.href = "https://tally.so/popup/KYdbyD";
+  document.head.append(hint);
+}
+function waitForTally() {
+  if (window.Tally?.openPopup) return Promise.resolve();
+  return new Promise(resolve => {
+    const deadline = Date.now() + 8000;
+    const timer = setInterval(() => {
+      if (window.Tally?.openPopup || Date.now() >= deadline) { clearInterval(timer); resolve(); }
+    }, 100);
+  });
+}
 
 const initialPage = location.hash.slice(1);
 drawThemes();
 showStep(0);
 
-if (initialPage === "about" || initialPage === "contact") {
+if (initialPage === "about" || initialPage === "contact" || initialPage === "faq") {
   showPage(initialPage);
 }
