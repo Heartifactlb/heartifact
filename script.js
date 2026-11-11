@@ -205,7 +205,6 @@ function showStep(index) {
   }
 
   step = Math.max(0, Math.min(3, index));
-  if (step >= 2) warmPhotoForm();
   window.scrollTo?.({top: 0, behavior: "instant"});
   showPage("shop");
 
@@ -523,10 +522,16 @@ async function openPhotoForm() {
     window.Tally.openPopup("KYdbyD", {
       layout: "modal",
       width: 640,
+      hideTitle: true,
       overlay: true,
       hiddenFields: fields,
 
-      onLoad() { clearTimeout(loadTimeout); resetUpload(); $("upload-fallback").hidden = true; },
+      onOpen() {
+        clearTimeout(loadTimeout);
+        uploadButton.textContent = "Photo form open…";
+        $("upload-status").textContent = "Upload your photos and press Submit in the form. Your order details are already attached.";
+        $("upload-fallback").hidden = true;
+      },
 
       onSubmit(payload) {
         clearTimeout(loadTimeout); resetUpload();
@@ -665,31 +670,26 @@ window.addEventListener("hashchange", () => {
   else showStep(0);
 });
 
-// Use only the five supplied photos. Respect motion preferences and allow pausing.
+// Use only the five supplied photos and respect reduced-motion preferences.
 const galleryViews = [
   {
     "src": "assets/product-wedding.jpg",
-    "caption": "For your forever kind of love.",
     "alt": "Wedding Memory House featuring a couple, white flowers and golden details"
   },
   {
     "src": "assets/product-christmas.jpg",
-    "caption": "Your favorite people. Your coziest memory.",
     "alt": "Christmas Memory House with five family characters, a dog and snowy decorations"
   },
   {
     "src": "assets/product-mothers-day.jpg",
-    "caption": "A little house for her biggest love.",
     "alt": "Pink Mother’s Day Memory House showing a mother embracing her son"
   },
   {
     "src": "assets/product-paris.jpg",
-    "caption": "Some places stay with you forever.",
     "alt": "Romantic Memory House featuring a couple in Paris and red rose petals"
   },
   {
     "src": "assets/product-baby-girl.jpg",
-    "caption": "The beginning of a beautiful little story.",
     "alt": "It’s a Girl Memory House with parents, a newborn baby and pink decorations"
   }
 ];
@@ -727,15 +727,6 @@ if ($("gallery-image").complete) preloadNextPhoto();
 updateGalleryPlayback();
 
 
-let photoFormWarmed = false;
-function warmPhotoForm() {
-  if (photoFormWarmed || navigator.connection?.saveData) return;
-  photoFormWarmed = true;
-  const hint = document.createElement("link");
-  hint.rel = "prefetch"; hint.as = "document";
-  hint.href = "https://tally.so/popup/KYdbyD";
-  document.head.append(hint);
-}
 function waitForTally() {
   if (window.Tally?.openPopup) return Promise.resolve();
   return new Promise(resolve => {

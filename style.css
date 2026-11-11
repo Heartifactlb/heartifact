@@ -601,8 +601,27 @@ footer { padding: 5px; margin-top: 5px; }
 .gallery-image-wrap { background: transparent; border: 0; border-radius: 0; }
 #gallery-image { background: transparent; }
 
-/* A close-fitting keepsake frame, with warm paper and a fine brown edge. */
-.photo-stack { display: flex; justify-content: center; align-items: center; padding: 8px; }
-.memory-photo { display: block; position: relative; width: fit-content; max-width: 100%; height: 100%; padding: 5px; background: #fff9ef; border: 1px solid #94735c; border-radius: 5px; box-shadow: 0 4px 12px #33282120, 0 0 0 2px #d9b99e66; }
-.gallery-image-wrap { display: block; height: 100%; width: auto; max-width: 100%; aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid #c4a78c; border-radius: 2px; }
-#gallery-image { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* A moving backdrop behind a translucent, readable shop panel. */
+body::before { opacity: .34; animation: houses 18s linear infinite; will-change: transform; }
+#shop { background: rgba(240,223,206,.78); border-color: rgba(255,246,236,.32); }
+.photo-stack { display: flex; align-items: center; justify-content: center; padding: 4px; }
+.memory-photo { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; max-width: 100%; background: transparent; border: 0; padding: 0; border-radius: 0; box-shadow: none; }
+.gallery-image-wrap { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 0; aspect-ratio: auto; background: transparent; border: 0; border-radius: 0; }
+#gallery-image { display: block; width: 100%; height: 100%; object-fit: contain; background: transparent; }
+/* Solid writing surfaces keep the animated backdrop out of the text. */
+input, textarea, select { color: #2b211b; -webkit-text-fill-color: #2b211b; background: #fffaf4; border: 1px solid #9b7b63; font-size: 16px; line-height: 1.5; opacity: 1; }
+input::placeholder, textarea::placeholder { color: #705b4c; -webkit-text-fill-color: #705b4c; opacity: 1; }
+#instructions { height: 112px; min-height: 112px; max-height: 220px; padding: 12px; resize: vertical; overflow-y: auto; }
+label { color: #2b211b; font-size: 12px; line-height: 1.4; }
+.wordmark img { width: 230px; max-height: 64px; filter: brightness(.7) contrast(1.12); }
+@media(max-width:760px) {
+ .wordmark { flex: none; }
+ .wordmark img { width: clamp(118px,34vw,155px); max-height: 45px; }
+ .site-header { padding-block: 7px; }
+ label { font-size: 12px; }
+ #instructions { height: 112px; min-height: 112px; }
+}
+@media(prefers-reduced-motion:reduce) { body::before { animation: none !important; } }
+
+@media(max-width:760px) { nav button { font-size: 10px; } }
