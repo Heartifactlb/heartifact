@@ -625,3 +625,24 @@ label { color: #2b211b; font-size: 12px; line-height: 1.4; }
 @media(prefers-reduced-motion:reduce) { body::before { animation: none !important; } }
 
 @media(max-width:760px) { nav button { font-size: 10px; } }
+
+/* Size and lights share the home-screen choice area. */
+.standard-sizes, .lights-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.standard-sizes .size-card, .lights-card { min-height: 100px; }
+.size-extras { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; margin-top: 4px; }
+.size-extras .text-link { padding: 5px 0; font-size: 13px; }
+.lights-card > strong { font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.4; }
+.lights-extra { display: inline-block; font-size: 13px; font-weight: 400; }
+.lights-grid [data-lights="true"] { background: #dec3a9; }
+.lights-card.selected { border-color: var(--wood); }
+@media(max-width:760px) {
+ .standard-sizes .size-card, .lights-card { min-height: 90px; padding: 10px; }
+ .lights-card > strong { font-size: 15px; }
+ .size-extras, .size-extras .text-link { font-size: 12px; }
+ .step-nav button { font-size: 10px; }
+ #lights-heading { font-size: 22px; }
+}
+@media(max-height:650px) {
+ .standard-sizes .size-card, .lights-card { min-height: 76px; }
+ .size-extras .text-link { min-height: 32px; }
+}

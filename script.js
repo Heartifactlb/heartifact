@@ -4,8 +4,8 @@ const $ = id => document.getElementById(id);
 const money = cents => "$" + (cents / 100).toFixed(2);
 
 const PRODUCTS = {
-  Mini: { name: "Mini · The Memory House", cents: 2500 },
-  Grand: { name: "Grand · The Memory House", cents: 3500 }
+  Mini: { name: "Small · The Memory House", cents: 2500 },
+  Grand: { name: "Big · The Memory House", cents: 3500 }
 };
 
 const THEMES = {
@@ -93,6 +93,7 @@ const THEMES = {
 
 const freshOrder = () => ({
   size: "",
+  lights: null,
   theme: "",
   design: "",
   quantity: 1,
@@ -102,14 +103,15 @@ const freshOrder = () => ({
 
 let state = freshOrder();
 let step = 0;
+let homeChoice = "size";
 let activePage = "shop";
 let advanceTimer;
 let submittedOrder = null;
 let fallbackOrder = null;
 let checkoutRevision = 0;
 
-const total = () =>
-  (PRODUCTS[state.size]?.cents || 0) * state.quantity;
+const unitPrice = () => (PRODUCTS[state.size]?.cents || 0) + (state.size && state.lights === true ? 500 : 0);
+const total = () => unitPrice() * state.quantity;
 
 function choices() {
   if (!THEMES[state.theme]) return [];
@@ -133,9 +135,9 @@ function updateSummary() {
   $("quantity").textContent = state.quantity;
   $("quantity-minus").disabled = state.quantity <= 1;
   $("quantity-plus").disabled = state.quantity >= 10;
-  $("running-total").textContent = state.size ? money(total()) + " · Free delivery" : "";
+  $("running-total").textContent = state.size ? (state.lights === null ? "Choose your lights" : money(total()) + " · Free delivery") : "";
   $("summary-name").textContent =
-    PRODUCTS[state.size]?.name || "The Memory House";
+    state.size ? (state.size === "Mini" ? "Small" : "Big") + (state.lights === true ? " + lights" : state.lights === false ? " · Without lights" : "") : "The Memory House";
   $("summary-design").textContent = [THEMES[state.theme]?.title, state.design].filter(Boolean).join(" · ");
   $("summary-quantity").textContent = state.quantity;
   $("summary-total").textContent = money(total());
@@ -151,7 +153,11 @@ function selected(selector, key, value) {
 
 function validate(index) {
   if (index === 0 && !PRODUCTS[state.size]) {
-    return "Choose Mini or Grand to start.";
+    return "Choose Small or Big to start.";
+  }
+
+  if (index === 0 && typeof state.lights !== "boolean") {
+    return "Choose with or without lights.";
   }
 
   if (index === 1 && !THEMES[state.theme]) {
@@ -198,6 +204,7 @@ function showStep(index) {
     const error = validate(n);
 
     if (error) {
+      if (n === 0) homeChoice = state.size ? "lights" : "size";
       showStep(n);
       $("error").textContent = error;
       return;
@@ -229,11 +236,30 @@ document.querySelectorAll("[data-go]").forEach(button => {
     }
   });
 
-  $("previous-step").hidden = step === 0;
+  updateHomeChoices();
 
   $("error").textContent = "";
   updateSummary();
   history.replaceState(null, "", step === 0 ? "#home" : "#create");
+}
+
+function updateHomeChoices() {
+  const choosingLights = homeChoice === "lights" && Boolean(state.size);
+  $("size-options").hidden = choosingLights;
+  $("lights-options").hidden = !choosingLights;
+  $("previous-step").hidden = step === 0 && !choosingLights;
+  if (state.size) {
+    $("lights-size").textContent = state.size === "Mini" ? "SMALL" : "BIG";
+    $("price-without-lights").textContent = money(PRODUCTS[state.size].cents).replace(".00", "");
+    $("price-with-lights").textContent = money(PRODUCTS[state.size].cents + 500).replace(".00", "");
+  }
+  selected("[data-lights]", "lights", state.lights === null ? "" : String(state.lights));
+}
+
+function goBack() {
+  clearTimeout(advanceTimer);
+  if (step === 0) { homeChoice = "size"; showStep(0); }
+  else { if (step === 1) homeChoice = "lights"; showStep(step - 1); }
 }
 
 function advance(index) {
@@ -457,7 +483,10 @@ async function openPhotoForm() {
     `Theme: ${THEMES[state.theme].title}`,
     `Design: ${state.design}`,
     `Quantity: ${state.quantity}`,
-    `Unit price: ${money(product.cents)}`,
+    `Size: ${state.size === "Mini" ? "Small" : "Big"}`,
+    `Base price: ${money(product.cents)}`,
+    `Lights: ${state.lights ? "Yes (+$5.00 per house)" : "No"}`,
+    `Unit price: ${money(unitPrice())}`,
     `Delivery: Free ($0.00)`,
     `Total: ${money(total())}`,
     `Customer: ${details.name}`,
@@ -556,28 +585,41 @@ async function openPhotoForm() {
 }
 
 
-$("previous-step").addEventListener("click", () => showStep(step - 1));
+$("previous-step").addEventListener("click", goBack);
 
 
 document.querySelectorAll("[data-page]").forEach(button => {
   button.addEventListener("click", () => {
-    if (button.dataset.page === "home") showStep(0);
+    if (button.dataset.page === "home") { homeChoice = "size"; showStep(0); }
     else showPage(button.dataset.page);
   });
 });
 
 document.querySelectorAll("[data-go]").forEach(button => {
   button.addEventListener("click", () => {
+    if (Number(button.dataset.go) === 0) homeChoice = "size";
     showStep(Number(button.dataset.go));
   });
 });
 
 document.querySelectorAll("[data-size]").forEach(button => {
   button.addEventListener("click", () => {
+    clearTimeout(advanceTimer);
     state.size = button.dataset.size;
+    state.lights = null;
+    homeChoice = "lights";
     edited();
     selected("[data-size]", "size", state.size);
-    advance(1);
+    updateHomeChoices();
+    $("lights-heading").focus({ preventScroll: true });
+  });
+});
+
+document.querySelectorAll("[data-lights]").forEach(button => {
+  button.addEventListener("click", () => {
+    if (!PRODUCTS[state.size]) { homeChoice = "size"; showStep(0); return; }
+    state.lights = button.dataset.lights === "true";
+    edited(); updateHomeChoices(); advance(1);
   });
 });
 
@@ -624,6 +666,7 @@ $("fallback-link").addEventListener("click", openPhotoForm);
 
 $("new-order").addEventListener("click", () => {
   state = freshOrder();
+  homeChoice = "size";
   submittedOrder = null;
   fallbackOrder = null;
   $("details-form").reset();
@@ -658,7 +701,7 @@ $("slide-area").addEventListener("touchend", event => {
 
   if (Math.abs(dx) < 65 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
 
-  if (dx > 0 && step > 0) showStep(step - 1);
+  if (dx > 0 && (step > 0 || homeChoice === "lights")) goBack();
   else if (dx < 0 && step < 3) showStep(step + 1);
 }, { passive: true });
 
@@ -667,7 +710,7 @@ window.addEventListener("hashchange", () => {
 
   if (page === "about" || page === "contact" || page === "faq") showPage(page);
   else if (page === "thank-you" && submittedOrder) showPage(page);
-  else showStep(0);
+  else { homeChoice = "size"; showStep(0); }
 });
 
 // Use only the five supplied photos and respect reduced-motion preferences.
