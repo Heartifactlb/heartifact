@@ -426,6 +426,7 @@ function photoCount(payload) {
 
 function finishOrder(order) {
   submittedOrder = order;
+  window.heartifactMeasure?.("Lead", order.product, order.id);
   $("confirmation-reference").textContent = "Order reference: " + order.id;
   showPage("thank-you");
 }
@@ -502,6 +503,7 @@ async function openPhotoForm() {
 
   const order = {
     id: state.orderId,
+    product: state.size,
     details: message,
     photoCount: null
   };
@@ -556,6 +558,7 @@ async function openPhotoForm() {
       hiddenFields: fields,
 
       onOpen() {
+        window.heartifactMeasure?.("InitiateCheckout", order.product);
         clearTimeout(loadTimeout);
         uploadButton.textContent = "Photo form open…";
         $("upload-status").textContent = "Upload your photos and press Submit in the form. Your order details are already attached.";
@@ -606,6 +609,7 @@ document.querySelectorAll("[data-size]").forEach(button => {
   button.addEventListener("click", () => {
     clearTimeout(advanceTimer);
     state.size = button.dataset.size;
+    window.heartifactMeasure?.("ViewContent", state.size);
     state.lights = null;
     homeChoice = "lights";
     edited();
@@ -787,3 +791,4 @@ showStep(0);
 if (initialPage === "about" || initialPage === "contact" || initialPage === "faq") {
   showPage(initialPage);
 }
+
